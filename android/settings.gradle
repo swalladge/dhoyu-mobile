@@ -1,0 +1,3 @@
+rootProject.name = 'dhoyu'
+
+include ':app'
