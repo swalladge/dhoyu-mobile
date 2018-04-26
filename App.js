@@ -9,29 +9,59 @@ import {
   Platform,
   StyleSheet,
   Text,
-  View
+  View,
+  Button,
 } from 'react-native';
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' +
-    'Cmd+D or shake for dev menu',
-  android: 'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { Provider, connect } from 'react-redux';
+import thunk from 'redux-thunk';
 
-type Props = {};
-export default class App extends Component<Props> {
+import { StackNavigator, DrawerNavigator, addNavigationHelpers } from 'react-navigation';
+
+import reducers, { initialState } from './reducers';
+import styles from './styles';
+
+const store = createStore(
+  reducers,
+  initialState,
+  applyMiddleware(thunk),
+);
+
+class Home extends Component<Props> {
+  static navigationOptions = ({ navigation }) => ({
+    drawerLabel: 'Home',
+    title: 'Home page',
+  });
+
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
-          Welcome to React Native!
+            Welcome to React Native!
         </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
+        <Text style={styles.welcome}>
+            HOME SCREEN
         </Text>
-        <Text style={styles.instructions}>
-          {instructions}
+        <Button
+          title="another screen"
+          onPress={() => this.props.navigation.navigate('Another')}
+        />
+      </View>
+    );
+  }
+}
+
+class Another extends Component<Props> {
+  static navigationOptions = {
+    drawerLabel: 'Another',
+    title: 'Another random page',
+  };
+  render() {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.welcome}>
+            Another page...
         </Text>
       </View>
     );
@@ -39,21 +69,38 @@ export default class App extends Component<Props> {
 }
 
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+const DrawerNav = DrawerNavigator({
+  Home: {
+    screen: Home,
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+  Another: {
+    screen: Another,
   },
 });
+
+const RootNav = StackNavigator(
+  {
+    drawer: {
+      screen: DrawerNav,
+    },
+  },
+  {
+    navigationOptions: ({ navigation }) => ({
+      headerStyle: { backgroundColor: 'green' },
+      headerLeft: <Text onPress={() => navigation.navigate('DrawerToggle')}>Menu</Text>,
+    }),
+  },
+);
+
+
+type Props = any;
+
+export default class App extends Component<Props> {
+  render() {
+    return (
+      <Provider store={store}>
+        <RootNav />
+      </Provider>
+    );
+  }
+}
