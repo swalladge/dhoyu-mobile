@@ -4,23 +4,25 @@
  * @flow
  */
 
-import React, { Component } from 'react';
+import React from 'react';
 import {
-  Platform,
-  StyleSheet,
-  Text,
   View,
-  Button,
 } from 'react-native';
 
-import { createStore, combineReducers, applyMiddleware } from 'redux';
-import { Provider, connect } from 'react-redux';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 
-import { StackNavigator, DrawerNavigator, addNavigationHelpers } from 'react-navigation';
+import { StackNavigator, DrawerNavigator } from 'react-navigation';
 
 import reducers, { initialState } from './reducers';
 import styles from './styles';
+
+import Home from './containers/Home';
+import Settings from './containers/Settings';
+
 
 const store = createStore(
   reducers,
@@ -28,56 +30,19 @@ const store = createStore(
   applyMiddleware(thunk),
 );
 
-class Home extends Component<Props> {
-  static navigationOptions = ({ navigation }) => ({
-    drawerLabel: 'Home',
-    title: 'Home page',
-  });
-
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-            Welcome to React Native!
-        </Text>
-        <Text style={styles.welcome}>
-            HOME SCREEN
-        </Text>
-        <Button
-          title="another screen"
-          onPress={() => this.props.navigation.navigate('Another')}
-        />
-      </View>
-    );
-  }
-}
-
-class Another extends Component<Props> {
-  static navigationOptions = {
-    drawerLabel: 'Another',
-    title: 'Another random page',
-  };
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-            Another page...
-        </Text>
-      </View>
-    );
-  }
-}
-
-
 const DrawerNav = DrawerNavigator({
   Home: {
     screen: Home,
   },
-  Another: {
-    screen: Another,
+  Settings: {
+    screen: Settings,
   },
+  // Add other screens to be in hamburger menu here.
 });
 
+
+// main root navigator - contains the drawer navigator and header to show the
+// hamburger menu icon
 const RootNav = StackNavigator(
   {
     drawer: {
@@ -86,21 +51,16 @@ const RootNav = StackNavigator(
   },
   {
     navigationOptions: ({ navigation }) => ({
-      headerStyle: { backgroundColor: 'green' },
-      headerLeft: <Text onPress={() => navigation.navigate('DrawerToggle')}>Menu</Text>,
+      headerStyle: { backgroundColor: 'orange' },
+      headerLeft: <View margin={10}><Icon name="bars" size={30} onPress={() => navigation.navigate('DrawerToggle')} /></View>,
     }),
   },
 );
 
+const App = () => (
+  <Provider store={store}>
+    <RootNav />
+  </Provider>
+);
 
-type Props = any;
-
-export default class App extends Component<Props> {
-  render() {
-    return (
-      <Provider store={store}>
-        <RootNav />
-      </Provider>
-    );
-  }
-}
+export default App;
