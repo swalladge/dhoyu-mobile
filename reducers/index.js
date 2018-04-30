@@ -11,7 +11,7 @@ const initialUserState = {
   registerError: '',
 };
 
-export function userReducer(state: any = initialUserState, action: any) {
+export const userReducer = (state: any = initialUserState, action: any) => {
   switch (action.type) {
     case ACTIONS.REGISTER_USERNAME_CHANGED: {
       return {
@@ -47,4 +47,4 @@ export function userReducer(state: any = initialUserState, action: any) {
 
     default: return state;
   }
-}
+};

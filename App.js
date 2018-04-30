@@ -4,23 +4,19 @@
 
 import React from 'react';
 import {
-  BackHandler,
   View,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { createStore, applyMiddleware, combineReducers } from 'redux';
-import { Provider, connect } from 'react-redux';
+import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
-
-import { StackNavigator, DrawerNavigator, addNavigationHelpers, NavigationActions } from 'react-navigation';
-import { createReduxBoundAddListener,
-  createReactNavigationReduxMiddleware,
-} from 'react-navigation-redux-helpers';
+import { StackNavigator, DrawerNavigator } from 'react-navigation';
 
 import { userReducer } from './reducers';
-import styles from './styles';
+
+import NavigationService from './NavigationService';
 
 import Home from './containers/Home';
 import Settings from './containers/Settings';
@@ -90,65 +86,17 @@ const RootNav = StackNavigator({
 });
 
 
-const initialNavState = RootNav.router.getStateForAction(RootNav.router.getActionForPathAndParams('loginStack'));
-const navReducer = (state = initialNavState, action) => {
-  const nextState = RootNav.router.getStateForAction(action, state);
-  return nextState || state;
-};
-
-// Note: createReactNavigationReduxMiddleware must be run before createReduxBoundAddListener
-const navMiddleware = createReactNavigationReduxMiddleware(
-  'root',
-  state => state.nav,
-);
-const addListener = createReduxBoundAddListener('root');
-
 const store = createStore(
   combineReducers({
     user: userReducer,
-    nav: navReducer,
   }),
-  applyMiddleware(navMiddleware, thunk),
+  applyMiddleware(thunk),
 );
 
 
-class AppNavigation extends React.Component {
-    componentDidMount() {
-    BackHandler.addEventListener("hardwareBackPress", this.onBackPress);
-  }
-  componentWillUnmount() {
-    BackHandler.removeEventListener("hardwareBackPress", this.onBackPress);
-  }
-  onBackPress = () => {
-    const { dispatch, nav } = this.props;
-    console.log(nav);
-    dispatch(NavigationActions.back());
-    return true;
-    if (nav.index === 0) {
-      return false;
-    }
-    dispatch(NavigationActions.back());
-    return true;
-  };
-
-  render() {
-    return <RootNav navigation={addNavigationHelpers({
-        dispatch: this.props.dispatch,
-        state: this.props.nav,
-        addListener,
-      })}
-      />;
-  }
-}
-
-const mapStateToProps = state => ({
-  nav: state.nav,
-});
-const AppWithNavigationState = connect(mapStateToProps)(AppNavigation);
-
 const App = () => (
   <Provider store={store}>
-    <AppWithNavigationState/>
+    <RootNav ref={(navRef) => { NavigationService.setTopLevelNavigator(navRef); }}/>
   </Provider>
 );
 

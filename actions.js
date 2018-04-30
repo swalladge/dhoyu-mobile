@@ -3,6 +3,8 @@
 import axios from 'axios';
 import { NavigationActions } from 'react-navigation';
 
+import NavigationService from './NavigationService';
+
 export const ACTIONS = {
   REGISTER_USERNAME_CHANGED: 0,
   REGISTER_PASSWORD_CHANGED: 1,
@@ -50,7 +52,6 @@ const getErrorMsg = (error) => {
 
 export function registerAction(): any {
   return (dispatch, getState) => {
-
     // get the variables and validate
     const { registerUsername, registerPassword } = getState().user;
     if (registerUsername.length === 0 || registerPassword.length === 0) {
@@ -66,7 +67,6 @@ export function registerAction(): any {
       username: registerUsername,
       password: registerPassword,
     }).then((response) => {
-
       // register success, let's login!
       axios.post('http://10.0.0.2:5000/api/token', {
         username: registerUsername,
@@ -75,16 +75,26 @@ export function registerAction(): any {
         const { token, expires } = response_.data;
         dispatch(setToken(token, expires));
 
-        // navigate to the home screen now we're loggedd in
-        dispatch(NavigationActions.navigate({ routeName: 'drawerStack' }));
-
+        // navigate to the home screen now we're logged in
+        // also remove the rest of the history - don't want to go back to
+        // register/login screens
+        NavigationService.dispatch(
+          NavigationActions.reset({
+            index: 0,
+            key: null,
+           actions: [NavigationActions.navigate({
+            type: NavigationActions.NAVIGATE,
+            routeName: 'drawerStack',
+           })
+           ]
+          })
+        );
       }).catch((error) => {
         dispatch({
           type: ACTIONS.REGISTER_INVALID,
           payload: getErrorMsg(error),
         });
       });
-
     }).catch((error) => {
       dispatch({
         type: ACTIONS.REGISTER_INVALID,
