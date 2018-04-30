@@ -21,10 +21,11 @@ type Props = {
   usernameChanged: (string) => void,
   passwordChanged: (string) => void,
   registerClicked: () => void,
+  registerErrorMsg: string,
 };
 
 const mapStateToProps = state => ({
-  registerErrorMsg: state.user.registerError,
+  registerErrorMsg: state.user.registerError || '',
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -42,7 +43,6 @@ const mapDispatchToProps = dispatch => ({
 
 class Register extends Component<Props> {
   render() {
-
     let error = undefined;
     if (this.props.registerErrorMsg.length > 0) {
       error = <Text>{this.props.registerErrorMsg}</Text>;

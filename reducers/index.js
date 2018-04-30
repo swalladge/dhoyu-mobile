@@ -9,6 +9,9 @@ const initialUserState = {
   token: '',
   token_expires: 0,
   registerError: '',
+  loginUsername: '',
+  loginPassword: '',
+  loginError: '',
 };
 
 export const userReducer = (state: any = initialUserState, action: any) => {
@@ -44,6 +47,30 @@ export const userReducer = (state: any = initialUserState, action: any) => {
         registerError: action.payload,
       };
     }
+
+    case ACTIONS.LOGIN_USERNAME_CHANGED: {
+      return {
+        ...state,
+        loginUsername: action.payload,
+        loginError: '',
+      };
+    }
+
+    case ACTIONS.LOGIN_PASSWORD_CHANGED: {
+      return {
+        ...state,
+        loginPassword: action.payload,
+        loginError: '',
+      };
+    }
+
+    case ACTIONS.LOGIN_INVALID: {
+      return {
+        ...state,
+        loginError: action.payload,
+      };
+    }
+
 
     default: return state;
   }
