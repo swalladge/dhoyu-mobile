@@ -16,7 +16,7 @@ type Props = {
 };
 
 export default class Settings extends Component<Props> {
-  static navigationOptions = ({ navigation }: Props) => ({
+  static navigationOptions = ({ navigation }: any) => ({
     drawerLabel: 'Settings',
     title: 'Settings',
   });

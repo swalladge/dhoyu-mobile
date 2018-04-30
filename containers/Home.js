@@ -25,7 +25,7 @@ const mapDispatchToProps = dispatch => ({
 
 
 class Home extends Component<Props> {
-  static navigationOptions = ({ navigation }: Props) => ({
+  static navigationOptions = ({ navigation }: any) => ({
     drawerLabel: 'Home',
     title: 'Dhoyu',
   });
