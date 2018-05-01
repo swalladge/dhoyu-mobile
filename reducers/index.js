@@ -1,20 +1,10 @@
 // @flow
 
+import { AsyncStorage } from 'react-native';
 
 import { ACTIONS } from '../actions';
 
-const initialUserState = {
-  registerUsername: '',
-  registerPassword: '',
-  token: '',
-  token_expires: 0,
-  registerError: '',
-  loginUsername: '',
-  loginPassword: '',
-  loginError: '',
-};
-
-export const userReducer = (state: any = initialUserState, action: any) => {
+export const userReducer = (state: any = {}, action: any) => {
   switch (action.type) {
     case ACTIONS.REGISTER_USERNAME_CHANGED: {
       return {
@@ -36,7 +26,6 @@ export const userReducer = (state: any = initialUserState, action: any) => {
       return {
         ...state,
         token: action.payload.token,
-        tokenExpires: action.payload.expires,
         registerError: '',
       };
     }
@@ -70,6 +59,15 @@ export const userReducer = (state: any = initialUserState, action: any) => {
         loginError: action.payload,
       };
     }
+
+    // case ACTIONS.SET_LOGIN_DETAILS: {
+    //   return {
+    //     ...state,
+    //     username: action.payload.username,
+    //     password: action.payload.password,
+    //   };
+    // }
+
 
 
     default: return state;

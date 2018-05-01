@@ -2,6 +2,7 @@
 
 import axios from 'axios';
 import { NavigationActions } from 'react-navigation';
+import { AsyncStorage } from 'react-native';
 
 import NavigationService from './NavigationService';
 
@@ -13,6 +14,7 @@ export const ACTIONS = {
   LOGIN_USERNAME_CHANGED: 4,
   LOGIN_PASSWORD_CHANGED: 5,
   LOGIN_INVALID: 6,
+  // SET_LOGIN_DETAILS: 7,
 };
 
 export function registerUsernameChanged(text: string): any {
@@ -48,14 +50,13 @@ const getErrorMsg = (error) => {
   }
   // Something happened in setting up the request that triggered an Error
   return error.message;
-
-  return error.config;
 };
 
 
 export function registerAction(): any {
   return (dispatch, getState) => {
     // get the variables and validate
+    console.log('registering!');
     const { registerUsername, registerPassword } = getState().user;
     if (registerUsername.length === 0 || registerPassword.length === 0) {
       dispatch({
@@ -77,6 +78,12 @@ export function registerAction(): any {
       }).then((response_) => {
         const { token, expires } = response_.data;
         dispatch(setToken(token, expires));
+
+        // save details to storage for later
+        AsyncStorage.setItem('loginDetails', JSON.stringify({
+          username: registerUsername,
+          password: registerPassword,
+        }));
 
         // navigate to the home screen now we're logged in
         // also remove the rest of the history - don't want to go back to
@@ -159,6 +166,56 @@ export function loginAction(): any {
         type: ACTIONS.LOGIN_INVALID,
         payload: getErrorMsg(error),
       });
+    });
+  };
+}
+
+// export function setLoginDetails(details: any): any {
+//   return {
+//     type: ACTIONS.SET_LOGIN_DETAILS,
+//     payload: details,
+//   };
+// }
+
+export function reHydrate(): any {
+  return (dispatch) => {
+    console.log('attempting to retrieve login details');
+
+    AsyncStorage.getItem('loginDetails').then((value) => {
+      if (value && value.length) {
+        const details = JSON.parse(value);
+        console.log(details);
+
+        // dispatch(setLoginDetails(details));
+
+
+        // actually do the thing
+        axios.post('http://10.0.0.2:5000/api/token', {
+          username: details.username,
+          password: details.password,
+        }).then((response) => {
+          const { token, expires } = response.data;
+          dispatch(setToken(token, expires));
+
+          // navigate to the home screen now we're logged in
+          // also remove the rest of the history - don't want to go back to
+          // register/login screens
+          NavigationService.dispatch(NavigationActions.reset({
+            index: 0,
+            key: null,
+            actions: [NavigationActions.navigate({
+              type: NavigationActions.NAVIGATE,
+              routeName: 'drawerStack',
+            }),
+            ],
+          }));
+        }).catch((error) => {
+          dispatch({
+            type: ACTIONS.LOGIN_INVALID,
+            payload: getErrorMsg(error),
+          });
+        });
+      }
     });
   };
 }

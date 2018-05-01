@@ -24,9 +24,12 @@ type Props = {
   registerErrorMsg: string,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = state => {
+  console.log(state);
+  return {
   registerErrorMsg: state.user.registerError || '',
-});
+  }
+};
 
 const mapDispatchToProps = dispatch => ({
   usernameChanged: (text: string) => {

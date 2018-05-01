@@ -2,7 +2,7 @@
  * @flow
  */
 
-import React from 'react';
+import React, { Component } from 'react';
 import {
   View,
 } from 'react-native';
@@ -22,6 +22,8 @@ import Home from './containers/Home';
 import Settings from './containers/Settings';
 import Register from './containers/Register';
 import Login from './containers/Login';
+
+import { reHydrate } from './actions';
 
 
 const DrawerNav = DrawerNavigator({
@@ -67,7 +69,7 @@ const LoginStack = StackNavigator(
       title: 'You are not logged in',
       headerTintColor: 'white',
     },
-    initialRouteName: 'registerScreen',
+    initialRouteName: 'loginScreen',
   },
 );
 
@@ -85,20 +87,53 @@ const RootNav = StackNavigator({
   initialRouteName: 'loginStack',
 });
 
+const initialState = {
+  user: {
+    registerUsername: '',
+    registerPassword: '',
+    token: '',
+    registerError: '',
+    loginUsername: '',
+    loginPassword: '',
+    loginError: '',
+    username: '',
+    password: '',
+  },
+};
+
 
 const store = createStore(
   combineReducers({
     user: userReducer,
   }),
+  initialState,
   applyMiddleware(thunk),
 );
 
+type Props = {
+};
 
-const App = () => (
-  <Provider store={store}>
-    <RootNav ref={(navRef) => { NavigationService.setTopLevelNavigator(navRef); }}/>
-  </Provider>
-);
+class App extends Component<Props> {
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      isStoreLoading: false,
+      store: store,
+    };
+  }
+
+  componentWillMount() {
+    this.state.store.dispatch(reHydrate());
+  }
+
+  render() {
+    return (
+      <Provider store={this.state.store}>
+        <RootNav ref={(navRef) => { NavigationService.setTopLevelNavigator(navRef); }} />
+      </Provider>
+    );
+  }
+}
 
 export default App;
 
