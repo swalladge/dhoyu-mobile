@@ -149,6 +149,12 @@ export function loginAction(): any {
       const { token, expires } = response_.data;
       dispatch(setToken(token, expires));
 
+      // save details to storage for later
+      AsyncStorage.setItem('loginDetails', JSON.stringify({
+        username: loginUsername,
+        password: loginPassword,
+      }));
+
       // navigate to the home screen now we're logged in
       // also remove the rest of the history - don't want to go back to
       // register/login screens
@@ -179,9 +185,10 @@ export function loginAction(): any {
 
 export function reHydrate(): any {
   return (dispatch) => {
-    console.log('attempting to retrieve login details');
+    console.log('Attempting to retrieve login details from storage.');
 
     AsyncStorage.getItem('loginDetails').then((value) => {
+      console.log('retrieval success');
       if (value && value.length) {
         const details = JSON.parse(value);
         console.log(details);
@@ -189,7 +196,7 @@ export function reHydrate(): any {
         // dispatch(setLoginDetails(details));
 
 
-        // actually do the thing
+        // actually login to the api
         axios.post('http://10.0.0.2:5000/api/token', {
           username: details.username,
           password: details.password,
@@ -215,7 +222,11 @@ export function reHydrate(): any {
             payload: getErrorMsg(error),
           });
         });
+      } else {
+        console.log('No saved details found.');
       }
+    }).catch((error) => {
+      console.log(error);
     });
   };
 }

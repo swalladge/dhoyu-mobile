@@ -22,19 +22,28 @@ import Home from './containers/Home';
 import Settings from './containers/Settings';
 import Register from './containers/Register';
 import Login from './containers/Login';
+import About from './containers/About';
 
 import { reHydrate } from './actions';
 
 
-const DrawerNav = DrawerNavigator({
-  Home: {
-    screen: Home,
-  },
-  Settings: {
-    screen: Settings,
-  },
+const DrawerNav = DrawerNavigator(
+  {
+    Home: {
+      screen: Home,
+    },
+    Settings: {
+      screen: Settings,
+    },
+    About: {
+      screen: About,
+    },
   // Add other screens to be in hamburger menu here.
-});
+  },
+  {
+    initialRouteName: 'Home',
+  },
+);
 
 
 // main root navigator - contains the drawer navigator and header to show the
@@ -113,13 +122,14 @@ const store = createStore(
 type Props = {
 };
 
-class App extends Component<Props> {
+class App extends Component<Props, any> {
   constructor(props: Props) {
     super(props);
     this.state = {
       isStoreLoading: false,
-      store: store,
+      store,
     };
+    // TODO: use this to show loading icon while logging in
   }
 
   componentWillMount() {
