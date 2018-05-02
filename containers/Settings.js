@@ -26,7 +26,7 @@ export default class Settings extends Component<Props> {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
+        <Text style={styles.headerText}>
           Settings
         </Text>
       </View>

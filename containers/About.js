@@ -19,6 +19,7 @@ type Props = {
   navigation: any,
 };
 
+
 import { APPNAME } from '../constants';
 
 const mapStateToProps = state => ({

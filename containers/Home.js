@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 
 import { connect } from 'react-redux';
+import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import styles from '../styles';
 
@@ -26,14 +27,15 @@ const mapDispatchToProps = dispatch => ({
 
 class Home extends Component<Props> {
   static navigationOptions = ({ navigation }: any) => ({
-    drawerLabel: 'Home',
-    title: 'Dhoyu',
+    drawerLabel: 'Play',
+    title: 'Play',
+    drawerIcon: <MaterialIcon name='play' size={20} />,
   });
 
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
+        <Text style={styles.headerText}>
           Play!
         </Text>
       </View>
