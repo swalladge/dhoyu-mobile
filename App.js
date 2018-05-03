@@ -14,7 +14,7 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { StackNavigator, DrawerNavigator } from 'react-navigation';
 
-import { userReducer } from './reducers';
+import { userReducer, profileReducer } from './reducers';
 
 import NavigationService from './NavigationService';
 
@@ -23,12 +23,16 @@ import Settings from './containers/Settings';
 import Register from './containers/Register';
 import Login from './containers/Login';
 import About from './containers/About';
+import User from './containers/User';
 
 import { reHydrate } from './actions';
 
 
 const DrawerNav = DrawerNavigator(
   {
+    User: {
+      screen: User,
+    },
     Home: {
       screen: Home,
     },
@@ -114,6 +118,7 @@ const initialState = {
 const store = createStore(
   combineReducers({
     user: userReducer,
+    profile: profileReducer,
   }),
   initialState,
   applyMiddleware(thunk),

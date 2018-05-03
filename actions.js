@@ -6,6 +6,8 @@ import { AsyncStorage } from 'react-native';
 
 import NavigationService from './NavigationService';
 
+import { setAPIToken, getUserDetails } from './Api';
+
 export const ACTIONS = {
   REGISTER_USERNAME_CHANGED: 0,
   REGISTER_PASSWORD_CHANGED: 1,
@@ -14,7 +16,9 @@ export const ACTIONS = {
   LOGIN_USERNAME_CHANGED: 4,
   LOGIN_PASSWORD_CHANGED: 5,
   LOGIN_INVALID: 6,
-  // SET_LOGIN_DETAILS: 7,
+  REFRESH_PROFILE: 7,
+  PROFILE_READY: 8,
+  PROFILE_FAILED: 9,
 };
 
 export function registerUsernameChanged(text: string): any {
@@ -31,13 +35,18 @@ export function registerPasswordChanged(text: string): any {
   };
 }
 
-export const setToken = (token: string, expires: number) => ({
-  type: ACTIONS.SET_TOKEN,
-  payload: {
-    token,
-    expires,
-  },
-});
+export const setToken = (token: string, expires: number) => {
+  // set the token in the api object
+  setAPIToken(token, expires);
+
+  return {
+    type: ACTIONS.SET_TOKEN,
+    payload: {
+      token,
+      expires,
+    },
+  };
+};
 
 
 // get a pretty error message given an axios `error` instance
@@ -176,13 +185,6 @@ export function loginAction(): any {
   };
 }
 
-// export function setLoginDetails(details: any): any {
-//   return {
-//     type: ACTIONS.SET_LOGIN_DETAILS,
-//     payload: details,
-//   };
-// }
-
 export function reHydrate(): any {
   return (dispatch) => {
     console.log('Attempting to retrieve login details from storage.');
@@ -230,3 +232,28 @@ export function reHydrate(): any {
     });
   };
 }
+
+
+export function refreshProfile(): any {
+  return (dispatch) => {
+    // alert the program that we've started loading
+    dispatch({
+      type: ACTIONS.REFRESH_PROFILE,
+    });
+
+    // load user details
+    getUserDetails().then((details) => {
+      dispatch({
+        type: ACTIONS.PROFILE_READY,
+        payload: details,
+      });
+    }).catch((error) => {
+      console.log(error);
+      dispatch({
+        type: ACTIONS.PROFILE_FAILED,
+        payload: getErrorMsg(error),
+      });
+    });
+  };
+}
+

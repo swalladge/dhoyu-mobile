@@ -60,15 +60,42 @@ export const userReducer = (state: any = {}, action: any) => {
       };
     }
 
-    // case ACTIONS.SET_LOGIN_DETAILS: {
-    //   return {
-    //     ...state,
-    //     username: action.payload.username,
-    //     password: action.payload.password,
-    //   };
-    // }
+    default: return state;
+  }
+};
 
 
+export const profileReducer = (state: any = {}, action: any) => {
+  console.log(action);
+  switch (action.type) {
+    case ACTIONS.REFRESH_PROFILE: {
+      return {
+        ...state,
+        state: 'loading',
+      };
+    }
+
+    case ACTIONS.PROFILE_READY: {
+      return {
+        ...state,
+        state: 'ready',
+        username: action.payload.username,
+        isAdmin: action.payload.is_admin,
+        gamesPlayed: action.payload.games_played,
+        gamesCreated: action.payload.games_created,
+        learnerScore: action.payload.learner_score,
+        creatorScore: action.payload.creator_score,
+        // and anything else required... such as likes/votes in future
+      };
+    }
+
+    case ACTIONS.PROFILE_FAILED: {
+      return {
+        ...state,
+        state: 'failed',
+        error: action.payload,
+      };
+    }
 
     default: return state;
   }

@@ -25,7 +25,6 @@ type Props = {
 };
 
 const mapStateToProps = state => {
-  console.log(state);
   return {
   registerErrorMsg: state.user.registerError || '',
   }
