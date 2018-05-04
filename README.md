@@ -6,14 +6,22 @@ Copyright © 2018 Samuel Walladge
 
 ## About
 
-A mobile game to learn literacy in Aboriginal languages, developed as part of a
-thesis.
+A mobile game for literacy in Aboriginal languages.
 
-MVP aimed at supporting Kriol only.
+Please note that MVP aimed at supporting Kriol only.
 
-Requires an api server to operate. A compatible server is being developed in
-parallel with this application. (TODO: link to server repository)
+Requires access to an instance of the [server](https://github.com/swalladge/dhoyu-server) to
+operate.
 
+
+### The Dhoyu project
+
+This repository is part of a thesis on mobile games for Aboriginal languages.
+
+Canonical sources are available at the following urls:
+
+- dhoyu-mobile: <https://github.com/swalladge/dhoyu>
+- dhoyu-server: <https://github.com/swalladge/dhoyu-server>
 
 
 ## Development
@@ -38,4 +46,19 @@ react-native run-android
 
 ## License
 
-TODO
+
+    Dhoyu
+    Copyright (C) 2018 Samuel Walladge
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
