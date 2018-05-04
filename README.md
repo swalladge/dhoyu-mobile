@@ -1,5 +1,5 @@
 
-# Dhoyu
+# Dhoyu Mobile
 
 Copyright © 2018 Samuel Walladge
 
@@ -47,7 +47,7 @@ react-native run-android
 ## License
 
 
-    Dhoyu
+    Dhoyu Mobile
     Copyright (C) 2018 Samuel Walladge
 
     This program is free software: you can redistribute it and/or modify
