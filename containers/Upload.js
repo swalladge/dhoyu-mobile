@@ -27,13 +27,17 @@ type Props = {
   chooseImage: () => void,
   images: [any],
   wordChanged: (string) => void,
+  switchChanged: (boolean) => void,
+  uploadGame: () => void,
   isPublic: boolean,
+  error: string,
 };
 
 
 const mapStateToProps = state => ({
   images: state.create.images || [],
   isPublic: state.create.isPublic || false,
+  error: state.create.error || '',
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -59,7 +63,8 @@ class Upload extends Component<Props> {
     drawerIcon: <MaterialIcon name="cloud-upload" size={20} />,
   });
 
-  // TODO: reset state on upload page load
+  // TODO: reset state on upload or reset action
+  // also need two way data binding for word text input?
 
   render() {
     const windowWidth = Dimensions.get('window').width;
@@ -70,10 +75,17 @@ class Upload extends Component<Props> {
       </View>
     ));
 
+    let error = undefined;
+    if (this.props.error.length > 0) {
+      error = <Text>{this.props.error}</Text>;
+    }
+
     return (
       <ScrollView>
         <View style={styles.infoPage}>
           <Text style={styles.headerText}>Create Game</Text>
+
+          {error}
 
           <TextInput
             style={{ width: '100%' }}

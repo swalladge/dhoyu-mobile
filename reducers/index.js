@@ -66,7 +66,6 @@ export const userReducer = (state: any = {}, action: any) => {
 
 
 export const profileReducer = (state: any = {}, action: any) => {
-  console.log(action);
   switch (action.type) {
     case ACTIONS.REFRESH_PROFILE: {
       return {
@@ -102,7 +101,6 @@ export const profileReducer = (state: any = {}, action: any) => {
 };
 
 export const uploadReducer = (state: any = {}, action: any) => {
-  console.log(action);
   switch (action.type) {
 
     case ACTIONS.CREATE_IMAGE_CHOSEN: {
@@ -123,6 +121,19 @@ export const uploadReducer = (state: any = {}, action: any) => {
       return {
         ...state,
         isPublic: action.payload,
+      };
+    }
+
+    case ACTIONS.CREATE_UPLOAD_COMPLETE: {
+      return {
+        ...state,
+      };
+    }
+
+    case ACTIONS.CREATE_UPLOAD_FAILED: {
+      return {
+        ...state,
+        error: action.payload,
       };
     }
 

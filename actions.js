@@ -7,7 +7,7 @@ import * as ImagePicker from 'react-native-image-picker';
 
 import NavigationService from './NavigationService';
 
-import { setAPIToken, getUserDetails } from './Api';
+import { setAPIToken, getUserDetails, uploadGameToAPI } from './Api';
 
 export const ACTIONS = {
   REGISTER_USERNAME_CHANGED: 0,
@@ -23,6 +23,8 @@ export const ACTIONS = {
   CREATE_IMAGE_CHOSEN: 10,
   CREATE_WORD_CHANGED: 11,
   CREATE_PUBLIC_SWITCH_CHANGED: 12,
+  CREATE_UPLOAD_COMPLETE: 13,
+  CREATE_UPLOAD_FAILED: 14,
 };
 
 export function registerUsernameChanged(text: string): any {
@@ -290,7 +292,9 @@ export function chooseCreateImage(): any {
         // here is where you could validate max image file sizes, etc.
         dispatch(imageChosen({
           uri: response.uri,
-          // anything else required in future
+          type: response.type,
+          fileSize: response.fileSize,
+          fileName: response.fileName,
         }));
       }
     });
@@ -311,7 +315,27 @@ export function createPublicSwitchChanged(value: boolean): any {
   };
 }
 
-export const uploadGame = () => (dispatch, getState) => {
-  // TODO: retrieve, process, send to api module for upload
-  console.log(getState().create);
+export const uploadGame = () => (dispatch: (any) => void, getState: () => any) => {
+  const state = getState();
+
+  // TODO: check for blank/invalid data
+
+  uploadGameToAPI({
+    images: state.create.images || [],
+    word: state.create.word || '',
+    public: state.create.isPublic || false,
+  }).then((details) => {
+    // navigate back to home screen for now
+    NavigationService.navigate('Home');
+    dispatch({
+      type: ACTIONS.CREATE_UPLOAD_COMPLETE,
+      // TODO: this would probably contain link/id for new game - handle appropriately
+      payload: details,
+    });
+  }).catch((error) => {
+    dispatch({
+      type: ACTIONS.CREATE_UPLOAD_FAILED,
+      payload: getErrorMsg(error),
+    });
+  });
 };
