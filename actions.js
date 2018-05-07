@@ -20,6 +20,9 @@ export const ACTIONS = {
   REFRESH_PROFILE: 7,
   PROFILE_READY: 8,
   PROFILE_FAILED: 9,
+  CREATE_IMAGE_CHOSEN: 10,
+  CREATE_WORD_CHANGED: 11,
+  CREATE_PUBLIC_SWITCH_CHANGED: 12,
 };
 
 export function registerUsernameChanged(text: string): any {
@@ -258,12 +261,57 @@ export function refreshProfile(): any {
   };
 }
 
+export const imageChosen = (data: any) => ({
+  type: ACTIONS.CREATE_IMAGE_CHOSEN,
+  payload: data,
+});
+
 
 export function chooseCreateImage(): any {
-  return (dispatch) => {
-    ImagePicker.showImagePicker({}, (response: any) => {
+  return (dispatch, getState) => {
+    const images = getState().create.images || [];
+    if (images.length >= 4) {
+      // max images reached
+      // TODO: display message
+      return;
+    }
+    ImagePicker.showImagePicker({
+      title: 'Select image to add to game',
+      mediaType: 'photo',
+    }, (response: any) => {
       console.log('image picker response', response);
+
+      if (response.didCancel) {
+        // ignore
+      } else if (response.error) {
+        console.log('Error: ', response.error);
+        // TODO: display message to user
+      } else {
+        // here is where you could validate max image file sizes, etc.
+        dispatch(imageChosen({
+          uri: response.uri,
+          // anything else required in future
+        }));
+      }
     });
   };
 }
 
+export function createWordChanged(text: string): any {
+  return {
+    type: ACTIONS.CREATE_WORD_CHANGED,
+    payload: text,
+  };
+}
+
+export function createPublicSwitchChanged(value: boolean): any {
+  return {
+    type: ACTIONS.CREATE_PUBLIC_SWITCH_CHANGED,
+    payload: value,
+  };
+}
+
+export const uploadGame = () => (dispatch, getState) => {
+  // TODO: retrieve, process, send to api module for upload
+  console.log(getState().create);
+};

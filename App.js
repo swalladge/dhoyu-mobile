@@ -14,7 +14,7 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { StackNavigator, DrawerNavigator } from 'react-navigation';
 
-import { userReducer, profileReducer } from './reducers';
+import { userReducer, profileReducer, uploadReducer } from './reducers';
 
 import NavigationService from './NavigationService';
 
@@ -116,6 +116,10 @@ const initialState = {
     username: '',
     password: '',
   },
+  create: {
+    images: [],
+    word: '',
+  },
 };
 
 
@@ -123,6 +127,7 @@ const store = createStore(
   combineReducers({
     user: userReducer,
     profile: profileReducer,
+    create: uploadReducer,
   }),
   initialState,
   applyMiddleware(thunk),

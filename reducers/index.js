@@ -100,3 +100,32 @@ export const profileReducer = (state: any = {}, action: any) => {
     default: return state;
   }
 };
+
+export const uploadReducer = (state: any = {}, action: any) => {
+  console.log(action);
+  switch (action.type) {
+
+    case ACTIONS.CREATE_IMAGE_CHOSEN: {
+      return {
+        ...state,
+        images: [...state.images, action.payload],
+      };
+    }
+
+    case ACTIONS.CREATE_WORD_CHANGED: {
+      return {
+        ...state,
+        word: action.payload,
+      };
+    }
+
+    case ACTIONS.CREATE_PUBLIC_SWITCH_CHANGED: {
+      return {
+        ...state,
+        isPublic: action.payload,
+      };
+    }
+
+    default: return state;
+  }
+};

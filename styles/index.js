@@ -32,6 +32,8 @@ const styles = StyleSheet.create({
   textLink: {
     color: 'blue',
   },
+  createImage: {
+  },
 });
 
 export default styles;
