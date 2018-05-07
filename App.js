@@ -24,6 +24,7 @@ import Register from './containers/Register';
 import Login from './containers/Login';
 import About from './containers/About';
 import User from './containers/User';
+import Upload from './containers/Upload';
 
 import { reHydrate } from './actions';
 
@@ -35,6 +36,9 @@ const DrawerNav = DrawerNavigator(
     },
     Home: {
       screen: Home,
+    },
+    Upload: {
+      screen: Upload,
     },
     Settings: {
       screen: Settings,
