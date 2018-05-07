@@ -14,11 +14,12 @@ import { connect } from 'react-redux';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import styles from '../styles';
-import { refreshProfile } from '../actions';
+import { chooseCreateImage } from '../actions';
 
 type LoadingState = 'loading' | 'failed' | 'ready';
 
 type Props = {
+  chooseImage: () => void,
 };
 
 
@@ -26,6 +27,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  chooseImage: () => {
+    dispatch(chooseCreateImage());
+  },
 });
 
 
@@ -43,6 +47,12 @@ class Upload extends Component<Props> {
         <Text>
           TODO
         </Text>
+
+        <Button
+          title="Pick image"
+          onPress={() => this.props.chooseImage()}
+        />
+
       </View>
     );
   }

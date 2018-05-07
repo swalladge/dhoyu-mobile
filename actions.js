@@ -3,6 +3,7 @@
 import axios from 'axios';
 import { NavigationActions } from 'react-navigation';
 import { AsyncStorage } from 'react-native';
+import * as ImagePicker from 'react-native-image-picker';
 
 import NavigationService from './NavigationService';
 
@@ -253,6 +254,15 @@ export function refreshProfile(): any {
         type: ACTIONS.PROFILE_FAILED,
         payload: getErrorMsg(error),
       });
+    });
+  };
+}
+
+
+export function chooseCreateImage(): any {
+  return (dispatch) => {
+    ImagePicker.showImagePicker({}, (response: any) => {
+      console.log('image picker response', response);
     });
   };
 }
