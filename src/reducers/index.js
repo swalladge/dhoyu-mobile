@@ -140,3 +140,27 @@ export const uploadReducer = (state: any = {}, action: any) => {
     default: return state;
   }
 };
+
+
+export const gamesListReducer = (state: any = {}, action: any) => {
+  switch (action.type) {
+
+    case ACTIONS.GAMES_LIST_LOADED: {
+      return {
+        ...state,
+        ready: true,
+        games: action.payload,
+      };
+    }
+
+    case ACTIONS.GAMES_LIST_LOADING: {
+      return {
+        ...state,
+        ready: false,
+        games: [],
+      };
+    }
+
+    default: return state;
+  }
+};

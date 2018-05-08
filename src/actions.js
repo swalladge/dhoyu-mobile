@@ -7,7 +7,7 @@ import * as ImagePicker from 'react-native-image-picker';
 
 import NavigationService from './NavigationService';
 
-import { setAPIToken, getUserDetails, uploadGameToAPI } from './Api';
+import * as API from './Api';
 
 export const ACTIONS = {
   REGISTER_USERNAME_CHANGED: 0,
@@ -25,6 +25,9 @@ export const ACTIONS = {
   CREATE_PUBLIC_SWITCH_CHANGED: 12,
   CREATE_UPLOAD_COMPLETE: 13,
   CREATE_UPLOAD_FAILED: 14,
+  GAMES_LIST_LOADING: 15,
+  GAMES_LIST_LOADED: 16,
+  GAMES_LIST_LOAD_FAIL: 17,
 };
 
 export function registerUsernameChanged(text: string): any {
@@ -43,7 +46,7 @@ export function registerPasswordChanged(text: string): any {
 
 export const setToken = (token: string, expires: number) => {
   // set the token in the api object
-  setAPIToken(token, expires);
+  API.setAPIToken(token, expires);
 
   return {
     type: ACTIONS.SET_TOKEN,
@@ -205,6 +208,7 @@ export function reHydrate(): any {
 
 
         // actually login to the api
+        // TODO: refactor this to within the API module
         axios.post('http://10.0.0.2:5000/api/token', {
           username: details.username,
           password: details.password,
@@ -248,7 +252,7 @@ export function refreshProfile(): any {
     });
 
     // load user details
-    getUserDetails().then((details) => {
+    API.getUserDetails().then((details) => {
       dispatch({
         type: ACTIONS.PROFILE_READY,
         payload: details,
@@ -321,7 +325,7 @@ export const uploadGame = () => (dispatch: (any) => void, getState: () => any) =
 
   // TODO: check for blank/invalid data
 
-  uploadGameToAPI({
+  API.uploadGame({
     images: state.create.images || [],
     word: state.create.word || '',
     public: state.create.isPublic || false,
@@ -336,6 +340,22 @@ export const uploadGame = () => (dispatch: (any) => void, getState: () => any) =
   }).catch((error) => {
     dispatch({
       type: ACTIONS.CREATE_UPLOAD_FAILED,
+      payload: getErrorMsg(error),
+    });
+  });
+};
+
+
+export const retrieveGamesList = () => (dispatch: (any) => void, getState: () => any) => {
+
+  API.retrieveGamesList().then((details) => {
+    dispatch({
+      type: ACTIONS.GAMES_LIST_LOADED,
+      payload: details.games,
+    });
+  }).catch((error) => {
+    dispatch({
+      type: ACTIONS.GAMES_LIST_LOAD_FAIL,
       payload: getErrorMsg(error),
     });
   });

@@ -29,11 +29,10 @@ type UploadGameData = {
 
 // NOTE: future work will include selecting language; at the moment it's just
 // hard coded
-export const uploadGameToAPI = (gameData: UploadGameData) => {
+export const uploadGame = (gameData: UploadGameData) => {
   console.log('uploadGameToAPI(', gameData);
-  // using any to shut flow up when using as arg to FormData.append - https://github.com/facebook/react-native/issues/13187
-  // https://stackoverflow.com/questions/48858804/flow-call-of-method-append-error-with-object-literal
-  const data: any = {
+
+  const data = {
     word: gameData.word,
     public: gameData.public,
     language: 'rop', // kriol language code
@@ -46,6 +45,21 @@ export const uploadGameToAPI = (gameData: UploadGameData) => {
   return axios.post(
     '/games',
     data,
+    {
+      baseURL: API_ROOT,
+      headers: {
+        Authorization: `Bearer ${_token}`,
+      },
+      timeout: 1000,
+    },
+  ).then(response => response.data);
+};
+
+
+export const retrieveGamesList = () => {
+  console.log('retrieving games list');
+  return axios.get(
+    '/games',
     {
       baseURL: API_ROOT,
       headers: {

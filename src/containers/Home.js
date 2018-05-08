@@ -38,6 +38,12 @@ class Home extends Component<Props> {
         <Text style={styles.headerText}>
           Play!
         </Text>
+
+        <Button
+          title="Find games"
+          onPress={() => this.props.navigation.navigate('FindGames') }
+        />
+
       </View>
     );
   }

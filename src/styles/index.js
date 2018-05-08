@@ -34,6 +34,18 @@ const styles = StyleSheet.create({
   },
   createImage: {
   },
+  gameInList: {
+    backgroundColor: '#e0e0e0',
+    padding: 10,
+    margin: 5,
+    shadowColor: '#000000',
+    shadowRadius: 5,
+    shadowOpacity: 1.0,
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+  },
 });
 
 export default styles;
