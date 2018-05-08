@@ -26,6 +26,9 @@ type UploadGameData = {
   public: boolean,
 };
 
+
+// NOTE: future work will include selecting language; at the moment it's just
+// hard coded
 export const uploadGameToAPI = (gameData: UploadGameData) => {
   console.log('uploadGameToAPI(', gameData);
   // using any to shut flow up when using as arg to FormData.append - https://github.com/facebook/react-native/issues/13187
@@ -33,24 +36,16 @@ export const uploadGameToAPI = (gameData: UploadGameData) => {
   const data: any = {
     word: gameData.word,
     public: gameData.public,
+    language: 'rop', // kriol language code
+    images: gameData.images.map(image => ({
+      data: image.data,
+    })),
+    audio: null,
   };
-
-  const body = new FormData();
-
-  for (const image of gameData.images) {
-    const imageData: any = {
-      uri: image.uri,
-      type: image.type,
-      name: image.fileName,
-    };
-    body.append('images[]', imageData);
-  }
-
-  body.append('data', JSON.stringify(data));
 
   return axios.post(
     '/games',
-    body,
+    data,
     {
       baseURL: API_ROOT,
       headers: {

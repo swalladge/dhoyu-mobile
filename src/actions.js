@@ -295,6 +295,7 @@ export function chooseCreateImage(): any {
           type: response.type,
           fileSize: response.fileSize,
           fileName: response.fileName,
+          data: response.data,
         }));
       }
     });
