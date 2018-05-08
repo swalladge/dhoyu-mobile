@@ -11,6 +11,10 @@ export const setAPIToken = (token: string, expires: ?number) => {
   _token = token;
 };
 
+export const removeAPIToken = () => {
+  _token = '';
+};
+
 export const getUserDetails = () => axios.get('/user', {
   baseURL: API_ROOT,
   headers: {

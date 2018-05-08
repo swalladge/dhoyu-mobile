@@ -14,7 +14,7 @@ import { connect } from 'react-redux';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import styles from '../styles';
-import { refreshProfile } from '../actions';
+import { refreshProfile, logout } from '../actions';
 
 type LoadingState = 'loading' | 'failed' | 'ready';
 
@@ -29,6 +29,7 @@ type Props = {
   learnerScore: number,
   creatorScore: number,
   error: string,
+  logout: () => void,
 };
 
 
@@ -47,6 +48,9 @@ const mapDispatchToProps = dispatch => ({
   refresh: () => {
     dispatch(refreshProfile());
   },
+  logout: () => {
+    dispatch(logout());
+  }
 });
 
 
@@ -61,70 +65,82 @@ class User extends Component<Props> {
     this.props.refresh();
   }
 
-  render() {
+  getUserJSX() {
     switch (this.props.state) {
       case 'loading': {
         return (
-          <View style={styles.infoPage}>
-            <Text style={styles.headerText}>My Profile</Text>
-            <Text>
-              Loading
-            </Text>
-          </View>
+          <Text>
+            Loading
+          </Text>
         );
       }
 
       case 'failed': {
-        return (
-          <View style={styles.infoPage}>
-            <Text style={styles.headerText}>My Profile</Text>
-            <Text>
-              Failed to load profile info
-            </Text>
-            <Text>
-              {this.props.error}
-            </Text>
-          </View>
-        );
+        return [
+          <Text>
+            Failed to load profile info
+          </Text>
+          ,
+          <Text>
+            {this.props.error}
+          </Text>
+        ];
       }
 
       case 'ready': {
         return (
-          <View style={styles.infoPage}>
-            <Text style={styles.headerText}>{this.props.username}</Text>
-            <Text>
-              Admin: {this.props.isAdmin}
-            </Text>
-            <Text>
-              Games played: {this.props.gamesPlayed}
-            </Text>
-            <Text>
-              Games created: {this.props.gamesCreated}
-            </Text>
-            <Text>
-              score (learner): {this.props.learnerScore}
-            </Text>
-            <Text>
-              score (creator): {this.props.creatorScore}
-            </Text>
-          </View>
+          <View>
+          <Text>
+            username: {this.props.username}
+          </Text>
+          <Text>
+            Admin: {this.props.isAdmin}
+          </Text>
+          <Text>
+            Games played: {this.props.gamesPlayed}
+          </Text>
+          <Text>
+            Games created: {this.props.gamesCreated}
+          </Text>
+          <Text>
+            score (learner): {this.props.learnerScore}
+          </Text>
+          <Text>
+            score (creator): {this.props.creatorScore}
+          </Text>
+        </View>
         );
       }
 
       default: {
-        return (
-          <View style={styles.infoPage}>
-            <Text style={styles.headerText}>My Profile</Text>
-            <Text>
-              SOMETHING FAILED
-            </Text>
-            <Text>
-              Invalid state: {this.props.state}
-            </Text>
-          </View>
-        );
+        return [
+          <Text>
+            SOMETHING FAILED
+          </Text>
+          ,
+          <Text>
+            Invalid state: {this.props.state}
+          </Text>
+        ];
       }
     }
+  }
+
+
+  render() {
+    return (
+      <View style={styles.infoPage}>
+        <Text style={styles.headerText}>My Profile</Text>
+
+        {this.getUserJSX()}
+
+        <Button
+          title="Logout"
+          onPress={() => this.props.logout() }
+        />
+
+      </View>
+    );
   }
 }
 

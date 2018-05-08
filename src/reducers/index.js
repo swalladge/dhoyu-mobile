@@ -30,6 +30,21 @@ export const userReducer = (state: any = {}, action: any) => {
       };
     }
 
+    case ACTIONS.USER_LOGOUT: {
+      return {
+        ...state,
+        registerUsername: '',
+        registerPassword: '',
+        token: '',
+        registerError: '',
+        loginUsername: '',
+        loginPassword: '',
+        loginError: '',
+        username: '',
+        password: '',
+      };
+    }
+
     case ACTIONS.REGISTER_INVALID: {
       return {
         ...state,

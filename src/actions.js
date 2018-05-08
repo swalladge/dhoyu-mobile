@@ -28,6 +28,7 @@ export const ACTIONS = {
   GAMES_LIST_LOADING: 15,
   GAMES_LIST_LOADED: 16,
   GAMES_LIST_LOAD_FAIL: 17,
+  USER_LOGOUT: 18,
 };
 
 export function registerUsernameChanged(text: string): any {
@@ -347,7 +348,6 @@ export const uploadGame = () => (dispatch: (any) => void, getState: () => any) =
 
 
 export const retrieveGamesList = () => (dispatch: (any) => void, getState: () => any) => {
-
   API.retrieveGamesList().then((details) => {
     dispatch({
       type: ACTIONS.GAMES_LIST_LOADED,
@@ -360,3 +360,25 @@ export const retrieveGamesList = () => (dispatch: (any) => void, getState: () =>
     });
   });
 };
+
+
+export const logout = () => (dispatch: (any) => void, getState: () => any) => {
+  // navigate back to the login screen
+  NavigationService.dispatch(NavigationActions.reset({
+    index: 0,
+    key: null,
+    actions: [NavigationActions.navigate({
+      type: NavigationActions.NAVIGATE,
+      routeName: 'loginStack',
+    }),
+    ],
+  }));
+
+  // wipe the user data from state
+  dispatch({
+    type: ACTIONS.USER_LOGOUT,
+  });
+  API.removeAPIToken();
+  AsyncStorage.clear();
+};
+
