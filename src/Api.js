@@ -36,11 +36,23 @@ type UploadGameData = {
 };
 
 
+// functions to build an instance of axios with the required config (including
+// authorization header)
+const getAxiosAuthedInst = () => axios.create({
+  baseURL: API_ROOT,
+  headers: {
+    Authorization: `Bearer ${_token}`,
+  },
+});
+
+const getAxiosInst = () => axios.create({
+  baseURL: API_ROOT,
+});
+
+
 // NOTE: future work will include selecting language; at the moment it's just
 // hard coded
 export const uploadGame = (gameData: UploadGameData) => {
-  console.log('uploadGameToAPI(', gameData);
-
   const data = {
     word: gameData.word,
     public: gameData.public,
@@ -51,15 +63,9 @@ export const uploadGame = (gameData: UploadGameData) => {
     audio: null,
   };
 
-  return axios.post(
+  return getAxiosAuthedInst().post(
     '/games',
     data,
-    {
-      baseURL: API_ROOT,
-      headers: {
-        Authorization: `Bearer ${_token}`,
-      },
-    },
   ).then(response => response.data).catch((error) => {
     throw getErrorMsg(error);
   });
@@ -68,41 +74,27 @@ export const uploadGame = (gameData: UploadGameData) => {
 
 export const retrieveGamesList = () => {
   console.log('retrieving games list');
-  return axios.get(
-    '/games',
-    {
-      baseURL: API_ROOT,
-      headers: {
-        Authorization: `Bearer ${_token}`,
-      },
-    },
-  ).then(response => response.data).catch((error) => {
+  return getAxiosAuthedInst().get('/games').then(response => response.data).catch((error) => {
     throw getErrorMsg(error);
   });
 };
 
-export const register = (username: string, password: string) => axios.post(
+export const register = (username: string, password: string) => getAxiosInst().post(
   '/register',
   {
     username,
     password,
-  },
-  {
-    baseURL: API_ROOT,
   },
 ).then(response => response.data).catch((error) => {
   throw getErrorMsg(error);
 });
 
 
-export const getToken = (username: string, password: string) => axios.post(
+export const getToken = (username: string, password: string) => getAxiosInst().post(
   '/token',
   {
     username,
     password,
-  },
-  {
-    baseURL: API_ROOT,
   },
 ).then(response => response.data).catch((error) => {
   throw getErrorMsg(error);
