@@ -6,7 +6,7 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "flow": "flow",
     "test": "jest",
-    "build-release": "(cd android && ENVFILE='.env.production' ./gradlew assembleRelease)"
+    "build-release": "(cd android && ENVFILE='../.env.production' ./gradlew assembleRelease)"
   },
   "dependencies": {
     "axios": "^0.18.0",
