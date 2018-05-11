@@ -58,18 +58,36 @@ export const setToken = (token: string, expires: number) => {
   };
 };
 
+const doLogin: (username: string, password: string, dispatch: (any) => void) => Promise<any> =
+  (username, password, dispatch) =>
+    API.getToken(username, password).then((data) => {
+      const { token, expires } = data;
+      dispatch(setToken(token, expires));
 
-// get a pretty error message given an axios `error` instance
-const getErrorMsg = (error) => {
-  console.log(error);
-  if (error.response) {
-    return `${error.response.status} | request failed`;
-  } else if (error.request) {
-    return `No response from server | ${error.request}`;
-  }
-  // Something happened in setting up the request that triggered an Error
-  return error.message;
-};
+      // save details to storage for later
+      AsyncStorage.setItem('loginDetails', JSON.stringify({
+        username,
+        password,
+      }));
+
+      // navigate to the home screen now we're logged in
+      // also remove the rest of the history - don't want to go back to
+      // register/login screens
+      NavigationService.dispatch(NavigationActions.reset({
+        index: 0,
+        key: null,
+        actions: [NavigationActions.navigate({
+          type: NavigationActions.NAVIGATE,
+          routeName: 'drawerStack',
+        }),
+        ],
+      }));
+    }).catch((error) => {
+      dispatch({
+        type: ACTIONS.LOGIN_INVALID,
+        payload: error,
+      });
+    });
 
 
 export function registerAction(): any {
@@ -85,47 +103,18 @@ export function registerAction(): any {
       return;
     }
 
-    // actually do the thing
-    axios.post('http://10.0.0.2:5000/api/register', {
-      username: registerUsername,
-      password: registerPassword,
-    }).then((response) => {
+    API.register(registerUsername, registerPassword).then((data) => {
       // register success, let's login!
-      axios.post('http://10.0.0.2:5000/api/token', {
-        username: registerUsername,
-        password: registerPassword,
-      }).then((response_) => {
-        const { token, expires } = response_.data;
-        dispatch(setToken(token, expires));
-
-        // save details to storage for later
-        AsyncStorage.setItem('loginDetails', JSON.stringify({
-          username: registerUsername,
-          password: registerPassword,
-        }));
-
-        // navigate to the home screen now we're logged in
-        // also remove the rest of the history - don't want to go back to
-        // register/login screens
-        NavigationService.dispatch(NavigationActions.reset({
-          index: 0,
-          key: null,
-          actions: [NavigationActions.navigate({
-            type: NavigationActions.NAVIGATE,
-            routeName: 'drawerStack',
-          }),
-          ],
-        }));
-      }).catch((error) => {
+      doLogin(registerUsername, registerPassword, dispatch).catch((error) => {
         dispatch({
           type: ACTIONS.REGISTER_INVALID,
-          payload: getErrorMsg(error),
+          payload: error,
         });
       });
     }).catch((error) => {
       dispatch({
         type: ACTIONS.REGISTER_INVALID,
-        payload: getErrorMsg(error),
+        payload: error,
       });
     });
   };
@@ -160,38 +149,7 @@ export function loginAction(): any {
       return;
     }
 
-    // actually do the thing
-    axios.post('http://10.0.0.2:5000/api/token', {
-      username: loginUsername,
-      password: loginPassword,
-    }).then((response_) => {
-      const { token, expires } = response_.data;
-      dispatch(setToken(token, expires));
-
-      // save details to storage for later
-      AsyncStorage.setItem('loginDetails', JSON.stringify({
-        username: loginUsername,
-        password: loginPassword,
-      }));
-
-      // navigate to the home screen now we're logged in
-      // also remove the rest of the history - don't want to go back to
-      // register/login screens
-      NavigationService.dispatch(NavigationActions.reset({
-        index: 0,
-        key: null,
-        actions: [NavigationActions.navigate({
-          type: NavigationActions.NAVIGATE,
-          routeName: 'drawerStack',
-        }),
-        ],
-      }));
-    }).catch((error) => {
-      dispatch({
-        type: ACTIONS.LOGIN_INVALID,
-        payload: getErrorMsg(error),
-      });
-    });
+    doLogin(loginUsername, loginPassword, dispatch);
   };
 }
 
@@ -202,39 +160,8 @@ export function reHydrate(): any {
     AsyncStorage.getItem('loginDetails').then((value) => {
       console.log('retrieval success');
       if (value && value.length) {
-        const details = JSON.parse(value);
-        console.log(details);
-
-        // dispatch(setLoginDetails(details));
-
-
-        // actually login to the api
-        // TODO: refactor this to within the API module
-        axios.post('http://10.0.0.2:5000/api/token', {
-          username: details.username,
-          password: details.password,
-        }).then((response) => {
-          const { token, expires } = response.data;
-          dispatch(setToken(token, expires));
-
-          // navigate to the home screen now we're logged in
-          // also remove the rest of the history - don't want to go back to
-          // register/login screens
-          NavigationService.dispatch(NavigationActions.reset({
-            index: 0,
-            key: null,
-            actions: [NavigationActions.navigate({
-              type: NavigationActions.NAVIGATE,
-              routeName: 'drawerStack',
-            }),
-            ],
-          }));
-        }).catch((error) => {
-          dispatch({
-            type: ACTIONS.LOGIN_INVALID,
-            payload: getErrorMsg(error),
-          });
-        });
+        const { username, password } = JSON.parse(value);
+        doLogin(username, password, dispatch);
       } else {
         console.log('No saved details found.');
       }
@@ -259,10 +186,9 @@ export function refreshProfile(): any {
         payload: details,
       });
     }).catch((error) => {
-      console.log(error);
       dispatch({
         type: ACTIONS.PROFILE_FAILED,
-        payload: getErrorMsg(error),
+        payload: error,
       });
     });
   };
@@ -341,7 +267,7 @@ export const uploadGame = () => (dispatch: (any) => void, getState: () => any) =
   }).catch((error) => {
     dispatch({
       type: ACTIONS.CREATE_UPLOAD_FAILED,
-      payload: getErrorMsg(error),
+      payload: error,
     });
   });
 };
@@ -356,7 +282,7 @@ export const retrieveGamesList = () => (dispatch: (any) => void, getState: () =>
   }).catch((error) => {
     dispatch({
       type: ACTIONS.GAMES_LIST_LOAD_FAIL,
-      payload: getErrorMsg(error),
+      payload: error,
     });
   });
 };

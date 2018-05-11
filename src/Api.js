@@ -2,7 +2,11 @@
 
 import axios from 'axios';
 
+import { getErrorMsg } from './Tools';
+
 const API_ROOT: string = 'http://10.0.0.2:5000/api';
+// export const API_ROOT: string = 'https://dhoyu.walladge.net/api';
+// TODO: make this configurable in some config file
 
 let _token: string = '';
 
@@ -20,8 +24,9 @@ export const getUserDetails = () => axios.get('/user', {
   headers: {
     Authorization: `Bearer ${_token}`,
   },
-  timeout: 1000,
-}).then(response => response.data);
+}).then(response => response.data).catch((error) => {
+  throw getErrorMsg(error);
+});
 
 
 type UploadGameData = {
@@ -54,9 +59,10 @@ export const uploadGame = (gameData: UploadGameData) => {
       headers: {
         Authorization: `Bearer ${_token}`,
       },
-      timeout: 1000,
     },
-  ).then(response => response.data);
+  ).then(response => response.data).catch((error) => {
+    throw getErrorMsg(error);
+  });
 };
 
 
@@ -69,7 +75,35 @@ export const retrieveGamesList = () => {
       headers: {
         Authorization: `Bearer ${_token}`,
       },
-      timeout: 1000,
     },
-  ).then(response => response.data);
+  ).then(response => response.data).catch((error) => {
+    throw getErrorMsg(error);
+  });
 };
+
+export const register = (username: string, password: string) => axios.post(
+  '/register',
+  {
+    username,
+    password,
+  },
+  {
+    baseURL: API_ROOT,
+  },
+).then(response => response.data).catch((error) => {
+  throw getErrorMsg(error);
+});
+
+
+export const getToken = (username: string, password: string) => axios.post(
+  '/token',
+  {
+    username,
+    password,
+  },
+  {
+    baseURL: API_ROOT,
+  },
+).then(response => response.data).catch((error) => {
+  throw getErrorMsg(error);
+});
