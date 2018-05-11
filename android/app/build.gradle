@@ -138,6 +138,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-config')
     compile project(':react-native-vector-icons')
     compile project(':react-native-image-picker')
     compile fileTree(dir: "libs", include: ["*.jar"])
@@ -156,3 +157,6 @@ task copyDownloadableDepsToLibs(type: Copy) {
 // https://github.com/oblador/react-native-vector-icons
 
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
+
+// https://github.com/luggit/react-native-config
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"

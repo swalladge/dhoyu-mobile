@@ -1,12 +1,11 @@
 // @flow
 
 import axios from 'axios';
+import Config from 'react-native-config';
 
 import { getErrorMsg } from './Tools';
 
-const API_ROOT: string = 'http://10.0.0.2:5000/api';
-// export const API_ROOT: string = 'https://dhoyu.walladge.net/api';
-// TODO: make this configurable in some config file
+const API_ROOT: string = Config.API_ROOT;
 
 let _token: string = '';
 
