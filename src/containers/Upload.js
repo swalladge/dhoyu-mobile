@@ -80,6 +80,7 @@ class Upload extends Component<Props> {
       error = <Text>{this.props.error}</Text>;
     }
 
+    // TODO: disable upload button after upload action send to avoid bounce
     return (
       <ScrollView>
         <View style={styles.infoPage}>

@@ -32,6 +32,9 @@ cd repo
 npm install -g react-native
 yarn install
 
+# edit .env to add api root variable
+# example: API_ROOT='http://10.0.0.2:5000/api'
+vi .env
 
 # fire up an emulator
 # then run:
@@ -42,6 +45,20 @@ react-native run-android
 
 - includes flowtypes so add flow linter to editor (eg. to js linters in ale on
   vim)
+
+
+## Build release apk
+
+Edit `.env.production` to provide the `API_ROOT` you want baked into the app.
+
+Set up your signing key config, etc. The `android/app/build.gradle` looks for
+`DHOYU_RELEASE_{STORE_FILE,STORE_PASSWORD,KEY_ALIAS,KEY_PASSWORD}` vars by
+default.
+
+Run `yarn build-release`.
+
+The release apk should appear at
+`android/app/build/outputs/apk/app-release.apk`. :tada:
 
 
 ## License
