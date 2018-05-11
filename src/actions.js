@@ -1,6 +1,5 @@
 // @flow
 
-import axios from 'axios';
 import { NavigationActions } from 'react-navigation';
 import { AsyncStorage } from 'react-native';
 import * as ImagePicker from 'react-native-image-picker';
@@ -45,15 +44,14 @@ export function registerPasswordChanged(text: string): any {
   };
 }
 
-export const setToken = (token: string, expires: number) => {
+export const setToken = (token: string) => {
   // set the token in the api object
-  API.setAPIToken(token, expires);
+  API.setAPIToken(token);
 
   return {
     type: ACTIONS.SET_TOKEN,
     payload: {
       token,
-      expires,
     },
   };
 };
@@ -61,8 +59,8 @@ export const setToken = (token: string, expires: number) => {
 const doLogin: (username: string, password: string, dispatch: (any) => void) => Promise<any> =
   (username, password, dispatch) =>
     API.getToken(username, password).then((data) => {
-      const { token, expires } = data;
-      dispatch(setToken(token, expires));
+      const { token } = data;
+      dispatch(setToken(token));
 
       // save details to storage for later
       AsyncStorage.setItem('loginDetails', JSON.stringify({
@@ -171,7 +169,6 @@ export function reHydrate(): any {
   };
 }
 
-
 export function refreshProfile(): any {
   return (dispatch) => {
     // alert the program that we've started loading
@@ -198,7 +195,6 @@ export const imageChosen = (data: any) => ({
   type: ACTIONS.CREATE_IMAGE_CHOSEN,
   payload: data,
 });
-
 
 export function chooseCreateImage(): any {
   return (dispatch, getState) => {
@@ -252,6 +248,7 @@ export const uploadGame = () => (dispatch: (any) => void, getState: () => any) =
 
   // TODO: check for blank/invalid data
 
+  // TODO: reset local state once successfully uploaded
   API.uploadGame({
     images: state.create.images || [],
     word: state.create.word || '',
@@ -272,7 +269,6 @@ export const uploadGame = () => (dispatch: (any) => void, getState: () => any) =
   });
 };
 
-
 export const retrieveGamesList = () => (dispatch: (any) => void, getState: () => any) => {
   API.retrieveGamesList().then((details) => {
     dispatch({
@@ -286,7 +282,6 @@ export const retrieveGamesList = () => (dispatch: (any) => void, getState: () =>
     });
   });
 };
-
 
 export const logout = () => (dispatch: (any) => void, getState: () => any) => {
   // navigate back to the login screen
@@ -307,4 +302,3 @@ export const logout = () => (dispatch: (any) => void, getState: () => any) => {
   API.removeAPIToken();
   AsyncStorage.clear();
 };
-

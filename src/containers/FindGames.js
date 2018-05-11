@@ -2,21 +2,14 @@
 
 import React, { Component } from 'react';
 import {
-  Platform,
-  StyleSheet,
   Text,
   View,
   Button,
-  Linking,
-  Image,
   ScrollView,
-  Dimensions,
-  Switch,
-  TextInput,
 } from 'react-native';
 
 import { connect } from 'react-redux';
-import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+// import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { retrieveGamesList } from '../actions';
 
@@ -53,14 +46,13 @@ class FindGames extends Component<Props> {
   }
 
   render() {
-
     const games = this.props.games.map(game => (
       <View elevation={5} style={styles.gameInList} key={game.id}>
         <Text>{game.word}</Text>
       </View>
     ));
 
-    let loadingInfo = undefined;
+    let loadingInfo;
     if (!this.props.ready) {
       loadingInfo = (
         <Text>Loading...</Text>
@@ -75,8 +67,8 @@ class FindGames extends Component<Props> {
           <Text>List of all games available.</Text>
 
           <Button
-            title='Refresh'
-            onPress={() => this.props.loadGames() }
+            title="Refresh"
+            onPress={() => this.props.loadGames()}
           />
 
 

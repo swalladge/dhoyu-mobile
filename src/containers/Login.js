@@ -2,8 +2,6 @@
 
 import React, { Component } from 'react';
 import {
-  Platform,
-  StyleSheet,
   Text,
   View,
   Button,
@@ -44,7 +42,7 @@ const mapDispatchToProps = dispatch => ({
 
 class Login extends Component<Props> {
   render() {
-    let error = undefined;
+    let error;
     if (this.props.loginErrorMsg.length > 0) {
       error = <Text>{this.props.loginErrorMsg}</Text>;
     }
@@ -66,14 +64,14 @@ class Login extends Component<Props> {
 
         <TextInput
           style={{ width: '100%' }}
-          secureTextEntry={true}
+          secureTextEntry
           placeholder="password"
           onChangeText={text => this.props.passwordChanged(text)}
         />
 
         <Button
           title="Login!"
-          onPress={() => this.props.loginClicked() }
+          onPress={() => this.props.loginClicked()}
         />
 
         <Button

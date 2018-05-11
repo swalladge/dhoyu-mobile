@@ -1,7 +1,5 @@
 // @flow
 
-import { AsyncStorage } from 'react-native';
-
 import { ACTIONS } from '../actions';
 
 export const userReducer = (state: any = {}, action: any) => {
@@ -117,7 +115,6 @@ export const profileReducer = (state: any = {}, action: any) => {
 
 export const uploadReducer = (state: any = {}, action: any) => {
   switch (action.type) {
-
     case ACTIONS.CREATE_IMAGE_CHOSEN: {
       return {
         ...state,
@@ -159,7 +156,6 @@ export const uploadReducer = (state: any = {}, action: any) => {
 
 export const gamesListReducer = (state: any = {}, action: any) => {
   switch (action.type) {
-
     case ACTIONS.GAMES_LIST_LOADED: {
       return {
         ...state,

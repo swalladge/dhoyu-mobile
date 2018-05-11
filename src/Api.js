@@ -5,28 +5,18 @@ import Config from 'react-native-config';
 
 import { getErrorMsg } from './Tools';
 
-const API_ROOT: string = Config.API_ROOT;
+const { API_ROOT } = Config;
 
-let _token: string = '';
+let token: string = '';
 
-export const setAPIToken = (token: string, expires: ?number) => {
+export const setAPIToken = (token_: string) => {
   console.log('setting global token value in api');
-  _token = token;
+  token = token_;
 };
 
 export const removeAPIToken = () => {
-  _token = '';
+  token = '';
 };
-
-export const getUserDetails = () => axios.get('/user', {
-  baseURL: API_ROOT,
-  headers: {
-    Authorization: `Bearer ${_token}`,
-  },
-}).then(response => response.data).catch((error) => {
-  throw getErrorMsg(error);
-});
-
 
 type UploadGameData = {
   images: Array<any>,
@@ -34,13 +24,12 @@ type UploadGameData = {
   public: boolean,
 };
 
-
 // functions to build an instance of axios with the required config (including
 // authorization header)
 const getAxiosAuthedInst = () => axios.create({
   baseURL: API_ROOT,
   headers: {
-    Authorization: `Bearer ${_token}`,
+    Authorization: `Bearer ${token}`,
   },
 });
 
@@ -48,6 +37,11 @@ const getAxiosInst = () => axios.create({
   baseURL: API_ROOT,
 });
 
+export const getUserDetails = () => getAxiosAuthedInst()
+  .get('/user')
+  .then(response => response.data).catch((error) => {
+    throw getErrorMsg(error);
+  });
 
 // NOTE: future work will include selecting language; at the moment it's just
 // hard coded
@@ -70,7 +64,6 @@ export const uploadGame = (gameData: UploadGameData) => {
   });
 };
 
-
 export const retrieveGamesList = () => {
   console.log('retrieving games list');
   return getAxiosAuthedInst().get('/games').then(response => response.data).catch((error) => {
@@ -87,7 +80,6 @@ export const register = (username: string, password: string) => getAxiosInst().p
 ).then(response => response.data).catch((error) => {
   throw getErrorMsg(error);
 });
-
 
 export const getToken = (username: string, password: string) => getAxiosInst().post(
   '/token',

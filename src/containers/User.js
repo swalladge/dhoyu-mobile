@@ -2,12 +2,9 @@
 
 import React, { Component } from 'react';
 import {
-  Platform,
-  StyleSheet,
   Text,
   View,
   Button,
-  Linking,
 } from 'react-native';
 
 import { connect } from 'react-redux';
@@ -50,7 +47,7 @@ const mapDispatchToProps = dispatch => ({
   },
   logout: () => {
     dispatch(logout());
-  }
+  },
 });
 
 
@@ -79,36 +76,35 @@ class User extends Component<Props> {
         return [
           <Text>
             Failed to load profile info
-          </Text>
-          ,
+          </Text>,
           <Text>
             {this.props.error}
-          </Text>
+          </Text>,
         ];
       }
 
       case 'ready': {
         return (
           <View>
-          <Text>
+            <Text>
             username: {this.props.username}
-          </Text>
-          <Text>
+            </Text>
+            <Text>
             Admin: {this.props.isAdmin}
-          </Text>
-          <Text>
+            </Text>
+            <Text>
             Games played: {this.props.gamesPlayed}
-          </Text>
-          <Text>
+            </Text>
+            <Text>
             Games created: {this.props.gamesCreated}
-          </Text>
-          <Text>
+            </Text>
+            <Text>
             score (learner): {this.props.learnerScore}
-          </Text>
-          <Text>
+            </Text>
+            <Text>
             score (creator): {this.props.creatorScore}
-          </Text>
-        </View>
+            </Text>
+          </View>
         );
       }
 
@@ -116,11 +112,10 @@ class User extends Component<Props> {
         return [
           <Text>
             SOMETHING FAILED
-          </Text>
-          ,
+          </Text>,
           <Text>
             Invalid state: {this.props.state}
-          </Text>
+          </Text>,
         ];
       }
     }
@@ -136,7 +131,7 @@ class User extends Component<Props> {
 
         <Button
           title="Logout"
-          onPress={() => this.props.logout() }
+          onPress={() => this.props.logout()}
         />
 
       </View>

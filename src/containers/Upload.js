@@ -2,12 +2,9 @@
 
 import React, { Component } from 'react';
 import {
-  Platform,
-  StyleSheet,
   Text,
   View,
   Button,
-  Linking,
   Image,
   ScrollView,
   Dimensions,
@@ -20,8 +17,6 @@ import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import styles from '../styles';
 import { chooseCreateImage, createWordChanged, createPublicSwitchChanged, uploadGame } from '../actions';
-
-type LoadingState = 'loading' | 'failed' | 'ready';
 
 type Props = {
   chooseImage: () => void,
@@ -52,7 +47,7 @@ const mapDispatchToProps = dispatch => ({
   },
   uploadGame: () => {
     dispatch(uploadGame());
-  }
+  },
 });
 
 
@@ -67,7 +62,7 @@ class Upload extends Component<Props> {
   // also need two way data binding for word text input?
 
   render() {
-    const windowWidth = Dimensions.get('window').width;
+    // const windowWidth = Dimensions.get('window').width;
 
     const imageElements = this.props.images.map(image => (
       <View style={{ height: 200, margin: 10 }} key={image.uri}>
@@ -75,7 +70,7 @@ class Upload extends Component<Props> {
       </View>
     ));
 
-    let error = undefined;
+    let error;
     if (this.props.error.length > 0) {
       error = <Text>{this.props.error}</Text>;
     }
@@ -94,13 +89,13 @@ class Upload extends Component<Props> {
             onChangeText={text => this.props.wordChanged(text)}
           />
 
-        <View>
-          <Text>Share game publicly?</Text>
-          <Switch
-            onValueChange={value => this.props.switchChanged(value)}
-            value={this.props.isPublic}
-          />
-        </View>
+          <View>
+            <Text>Share game publicly?</Text>
+            <Switch
+              onValueChange={value => this.props.switchChanged(value)}
+              value={this.props.isPublic}
+            />
+          </View>
 
           <Button
             title="Add image"

@@ -162,10 +162,9 @@ class App extends Component<Props, any> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      isStoreLoading: false,
       store,
     };
-    // TODO: use this to show loading icon while logging in
+    // TODO: use this state to show loading icon while logging in
   }
 
   componentWillMount() {

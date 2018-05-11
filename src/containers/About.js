@@ -2,11 +2,8 @@
 
 import React, { Component } from 'react';
 import {
-  Platform,
-  StyleSheet,
   Text,
   View,
-  Button,
   Linking,
 } from 'react-native';
 
@@ -15,12 +12,12 @@ import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import styles from '../styles';
 
+import { APPNAME } from '../constants';
+
 type Props = {
   navigation: any,
 };
 
-
-import { APPNAME } from '../constants';
 
 const mapStateToProps = state => ({
 });
@@ -33,7 +30,7 @@ class About extends Component<Props> {
   static navigationOptions = ({ navigation }: any) => ({
     drawerLabel: 'About',
     title: 'About',
-    drawerIcon: <MaterialIcon name='information-outline' size={20} />,
+    drawerIcon: <MaterialIcon name="information-outline" size={20} />,
   });
 
   // TODO: real github link once hosted
@@ -53,8 +50,8 @@ class About extends Component<Props> {
 
         <Text style={styles.headerText}>Acknowledgements</Text>
         <Text>
-          This application is inspired by work and designs by Thompson et al. (2016) and prototype by
-          Foley (2017).
+          This application is inspired by work and designs by Thompson et al.
+          (2016) and prototype by Foley (2017).
         </Text>
 
 

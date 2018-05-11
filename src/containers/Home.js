@@ -2,8 +2,6 @@
 
 import React, { Component } from 'react';
 import {
-  Platform,
-  StyleSheet,
   Text,
   View,
   Button,
@@ -29,7 +27,7 @@ class Home extends Component<Props> {
   static navigationOptions = ({ navigation }: any) => ({
     drawerLabel: 'Play',
     title: 'Play',
-    drawerIcon: <MaterialIcon name='play' size={20} />,
+    drawerIcon: <MaterialIcon name="play" size={20} />,
   });
 
   render() {
@@ -41,7 +39,7 @@ class Home extends Component<Props> {
 
         <Button
           title="Find games"
-          onPress={() => this.props.navigation.navigate('FindGames') }
+          onPress={() => this.props.navigation.navigate('FindGames')}
         />
 
       </View>

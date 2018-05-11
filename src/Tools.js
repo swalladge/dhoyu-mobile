@@ -1,9 +1,11 @@
 import jwtDecode from 'jwt-decode';
 
 export const isValidToken = (token) => {
-  let decoded = jwtDecode(token);
+  const decoded = jwtDecode(token);
   return new Date(decoded.exp * 1000) > new Date() ? decoded : null;
 };
+
+// TODO: function here to check if token expired using exp field if necessary
 
 // get a pretty error message given an axios `error` instance
 export const getErrorMsg: (any) => string = (error) => {
@@ -16,5 +18,3 @@ export const getErrorMsg: (any) => string = (error) => {
   // Something happened in setting up the request that triggered an Error
   return error.message;
 };
-
-

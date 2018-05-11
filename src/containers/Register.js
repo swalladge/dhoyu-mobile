@@ -2,8 +2,6 @@
 
 import React, { Component } from 'react';
 import {
-  Platform,
-  StyleSheet,
   Text,
   View,
   Button,
@@ -24,11 +22,9 @@ type Props = {
   registerErrorMsg: string,
 };
 
-const mapStateToProps = state => {
-  return {
+const mapStateToProps = state => ({
   registerErrorMsg: state.user.registerError || '',
-  }
-};
+});
 
 const mapDispatchToProps = dispatch => ({
   usernameChanged: (text: string) => {
@@ -45,7 +41,7 @@ const mapDispatchToProps = dispatch => ({
 
 class Register extends Component<Props> {
   render() {
-    let error = undefined;
+    let error;
     if (this.props.registerErrorMsg.length > 0) {
       error = <Text>{this.props.registerErrorMsg}</Text>;
     }
@@ -67,14 +63,14 @@ class Register extends Component<Props> {
 
         <TextInput
           style={{ width: '100%' }}
-          secureTextEntry={true}
+          secureTextEntry
           placeholder="password"
           onChangeText={text => this.props.passwordChanged(text)}
         />
 
         <Button
           title="Register!"
-          onPress={() => this.props.registerClicked() }
+          onPress={() => this.props.registerClicked()}
         />
 
         <Button
