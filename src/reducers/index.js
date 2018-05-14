@@ -172,6 +172,48 @@ export const gamesListReducer = (state: any = {}, action: any) => {
       };
     }
 
+
+    case ACTIONS.RETRIEVE_GAME_LOADING: {
+      return {
+        ...state,
+        playGameLoading: true,
+      };
+    }
+
+    case ACTIONS.RETRIEVE_GAME_FAILED: {
+      return {
+        ...state,
+        playGameLoading: false,
+        errorMsg: action.payload, // TODO: use this error message
+      };
+    }
+
+    case ACTIONS.PLAY_GAME_READY: {
+      return {
+        ...state,
+        playGameLoading: false,
+      };
+    }
+
+    default: return state;
+  }
+};
+
+
+export const currentGameReducer = (state: any = {}, action: any) => {
+  switch (action.type) {
+    case ACTIONS.PLAY_GAME_READY: {
+      return {
+        ...state,
+        id: action.payload.id,
+        author: action.payload.author,
+        public: action.payload.public,
+        word: action.payload.word,
+        language: action.payload.language,
+        images: action.payload.images,
+      }
+    }
+
     default: return state;
   }
 };

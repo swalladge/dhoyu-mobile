@@ -14,7 +14,7 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { StackNavigator, DrawerNavigator } from 'react-navigation';
 
-import { userReducer, profileReducer, uploadReducer, gamesListReducer } from './reducers';
+import { userReducer, profileReducer, uploadReducer, gamesListReducer, currentGameReducer } from './reducers';
 
 import NavigationService from './NavigationService';
 
@@ -26,6 +26,7 @@ import About from './containers/About';
 import User from './containers/User';
 import Upload from './containers/Upload';
 import FindGames from './containers/FindGames';
+import PlayGame from './containers/PlayGame';
 
 import { reHydrate } from './actions';
 
@@ -36,6 +37,9 @@ const PlayNav = StackNavigator(
     },
     FindGames: {
       screen: FindGames,
+    },
+    PlayGame: {
+      screen: PlayGame,
     },
   },
   {
@@ -140,6 +144,15 @@ const initialState = {
   gamesList: {
     games: [],
     ready: false,
+    playGameLoading: false,
+  },
+  currentGame: {
+    id: 0,
+    author: 'none',
+    public: false,
+    word: 'none',
+    language: 'none',
+    images: [],
   },
 };
 
@@ -150,6 +163,7 @@ const store = createStore(
     profile: profileReducer,
     create: uploadReducer,
     gamesList: gamesListReducer,
+    currentGame: currentGameReducer,
   }),
   initialState,
   applyMiddleware(thunk),

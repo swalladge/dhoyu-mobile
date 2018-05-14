@@ -28,6 +28,9 @@ export const ACTIONS = {
   GAMES_LIST_LOADED: 16,
   GAMES_LIST_LOAD_FAIL: 17,
   USER_LOGOUT: 18,
+  RETRIEVE_GAME_FAILED: 19,
+  RETRIEVE_GAME_LOADING: 20,
+  PLAY_GAME_READY: 21,
 };
 
 export function registerUsernameChanged(text: string): any {
@@ -301,4 +304,27 @@ export const logout = () => (dispatch: (any) => void, getState: () => any) => {
   });
   API.removeAPIToken();
   AsyncStorage.clear();
+};
+
+export const playGame = (id: string) => (dispatch: (any) => void, getState: () => any) => {
+  // const state = getState();
+  dispatch({
+    type: ACTIONS.RETRIEVE_GAME_LOADING,
+  });
+
+  // TODO: consider caching this: build up local data structure and check if key
+  // there before network request
+  API.retrieveGame(id).then((details) => {
+    dispatch({
+      type: ACTIONS.PLAY_GAME_READY,
+      payload: details, // a game with data 
+    });
+
+    NavigationService.navigate('PlayGame');
+  }).catch((error) => {
+    dispatch({
+      type: ACTIONS.RETRIEVE_GAME_FAILED,
+      payload: error,
+    });
+  });
 };

@@ -6,30 +6,37 @@ import {
   View,
   Button,
   ScrollView,
+  TouchableOpacity,
 } from 'react-native';
 
 import { connect } from 'react-redux';
-// import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { retrieveGamesList } from '../actions';
+import { retrieveGamesList, playGame } from '../actions';
 
 import styles from '../styles';
 
 type Props = {
   games: Array<any>,
   ready: boolean,
+  playGameLoading: boolean,
   loadGames: () => void,
+  playGame: (string) => void,
 };
 
 
 const mapStateToProps = state => ({
   games: state.gamesList.games || [],
   ready: state.gamesList.ready || false,
+  playGameLoading: state.gamesList.playGameLoading || false,
 });
 
 const mapDispatchToProps = dispatch => ({
   loadGames: () => {
     dispatch(retrieveGamesList());
+  },
+  playGame: (id: string) => {
+    dispatch(playGame(id));
   },
 });
 
@@ -47,9 +54,9 @@ class FindGames extends Component<Props> {
 
   render() {
     const games = this.props.games.map(game => (
-      <View elevation={5} style={styles.gameInList} key={game.id}>
+      <TouchableOpacity elevation={5} style={styles.gameInList} key={game.id} onPress={() => this.props.playGame(game.id)}>
         <Text>{game.word}</Text>
-      </View>
+      </TouchableOpacity>
     ));
 
     let loadingInfo;
@@ -58,6 +65,14 @@ class FindGames extends Component<Props> {
         <Text>Loading...</Text>
       );
     }
+
+    let playGameLoading;
+    if (this.props.playGameLoading) {
+      playGameLoading = (
+        <MaterialIcon name="loading" size={40} />
+      );
+    }
+
 
     return (
       <ScrollView>
@@ -73,6 +88,8 @@ class FindGames extends Component<Props> {
 
 
           {loadingInfo}
+
+          {playGameLoading}
 
           {games}
 

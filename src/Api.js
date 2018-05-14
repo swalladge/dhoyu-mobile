@@ -90,3 +90,11 @@ export const getToken = (username: string, password: string) => getAxiosInst().p
 ).then(response => response.data).catch((error) => {
   throw getErrorMsg(error);
 });
+
+export const retrieveGame = (id: string) => {
+  console.log(`retrieving game ${id}`);
+  return getAxiosAuthedInst().get(`/games/${id}`).then(response => response.data).catch((error) => {
+    throw getErrorMsg(error);
+  });
+};
+
