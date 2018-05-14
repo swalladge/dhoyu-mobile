@@ -211,6 +211,7 @@ export const currentGameReducer = (state: any = {}, action: any) => {
         word: action.payload.word,
         language: action.payload.language,
         images: action.payload.images,
+        pieces: action.payload.pieces,
       }
     }
 

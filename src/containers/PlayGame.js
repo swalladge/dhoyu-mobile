@@ -5,6 +5,7 @@ import {
   Text,
   View,
   Button,
+  Image,
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
@@ -16,13 +17,21 @@ import { retrieveGamesList, playGame } from '../actions';
 
 import styles from '../styles';
 
+type Piece = {
+  text: string,
+  id: number,
+};
+
 type Props = {
   game: any,
+  pieces: Array<Piece>,
+  navigation: any,
 };
 
 
 const mapStateToProps = state => ({
   game: state.currentGame,
+  pieces: state.currentGame.pieces,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -30,17 +39,47 @@ const mapDispatchToProps = dispatch => ({
 
 
 class PlayGame extends Component<Props> {
-  static navigationOptions = ({ navigation }: any) => ({
-    title: 'Play!',
-  });
+  // static navigationOptions = ({ navigation }: any) => ({
+  //   title: 'Play!',
+  // });
 
   render() {
     const game = this.props.game;
+
+    // TODO: tile images when more than one
+    const images = game.images.map(image => (
+      <View style={{ height: 200, margin: 10 }} key={image.id}>
+        <Image source={{ uri: image.data }} style={{ flex: 1 }} />
+      </View>
+    ));
+
+    const pieces = this.props.pieces.map(piece => (
+      <TouchableOpacity key={piece.id} onPress={() => {}}>
+        <View elevation={2} style={styles.letterTile} >
+          <Text>{piece.text}</Text>
+        </View>
+      </TouchableOpacity>
+    ));
+
     return (
+      <ScrollView>
       <View style={styles.infoPage}>
-        <Text style={styles.headerText}>Play game {game.id}</Text>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('FindGames')} >
+          <MaterialIcon name="close-circle-outline" size={40} />
+        </TouchableOpacity>
+
+        <Text style={styles.headerText}>Playing game {game.id}</Text>
+
+        {images}
+
+        <Text>TODO</Text>
+
+        <View style={styles.letterTilesWrapper}>
+        {pieces}
+        </View>
 
       </View>
+      </ScrollView>
     );
   }
 }

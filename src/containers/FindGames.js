@@ -54,8 +54,10 @@ class FindGames extends Component<Props> {
 
   render() {
     const games = this.props.games.map(game => (
-      <TouchableOpacity elevation={5} style={styles.gameInList} key={game.id} onPress={() => this.props.playGame(game.id)}>
-        <Text>{game.word}</Text>
+      <TouchableOpacity key={game.id} onPress={() => this.props.playGame(game.id)}>
+        <View elevation={5} style={styles.gameInList}>
+          <Text>{game.word}</Text>
+        </View>
       </TouchableOpacity>
     ));
 

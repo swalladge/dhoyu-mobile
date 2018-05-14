@@ -7,6 +7,7 @@ import * as ImagePicker from 'react-native-image-picker';
 import NavigationService from './NavigationService';
 
 import * as API from './Api';
+import { getRandomInt } from './Tools';
 
 export const ACTIONS = {
   REGISTER_USERNAME_CHANGED: 0,
@@ -306,6 +307,38 @@ export const logout = () => (dispatch: (any) => void, getState: () => any) => {
   AsyncStorage.clear();
 };
 
+const splitIntoPieces = (word: string) => {
+  let wordPieces = [];
+  let piece = '';
+
+  let i = 0;
+  while (i < word.length) {
+    if (piece === '' || getRandomInt(0,1) === 1) {
+      piece = piece + word[i];
+      i += 1;
+    } else {
+      wordPieces.push(piece);
+      piece = '';
+    }
+  }
+  if (piece !== '') {
+    wordPieces.push(piece);
+  }
+
+  // TODO: randomize list
+
+  let pieces = [];
+  for (let i = 0, len = wordPieces.length; i < len; i++) {
+    pieces.push({
+      text: wordPieces[i],
+      id: i,
+    });
+  }
+
+  console.log(pieces);
+  return pieces;
+};
+
 export const playGame = (id: string) => (dispatch: (any) => void, getState: () => any) => {
   // const state = getState();
   dispatch({
@@ -315,9 +348,13 @@ export const playGame = (id: string) => (dispatch: (any) => void, getState: () =
   // TODO: consider caching this: build up local data structure and check if key
   // there before network request
   API.retrieveGame(id).then((details) => {
+    console.log(details);
     dispatch({
       type: ACTIONS.PLAY_GAME_READY,
-      payload: details, // a game with data 
+      payload: {
+        ...details, // a game with data
+        pieces: splitIntoPieces(details.word),
+      },
     });
 
     NavigationService.navigate('PlayGame');

@@ -38,9 +38,6 @@ const PlayNav = StackNavigator(
     FindGames: {
       screen: FindGames,
     },
-    PlayGame: {
-      screen: PlayGame,
-    },
   },
   {
     headerMode: 'none',
@@ -117,6 +114,9 @@ const RootNav = StackNavigator({
   },
   drawerStack: {
     screen: MainNav,
+  },
+  PlayGame: {
+    screen: PlayGame,
   },
 }, {
   headerMode: 'none',

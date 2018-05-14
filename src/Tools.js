@@ -18,3 +18,12 @@ export const getErrorMsg: (any) => string = (error) => {
   // Something happened in setting up the request that triggered an Error
   return error.message;
 };
+
+/**
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+ * Returns a random integer between min (inclusive) and max (inclusive)
+ * Using Math.round() will give you a non-uniform distribution!
+ */
+export const getRandomInt = (min: number, max: number): number => (
+    Math.floor(Math.random() * (max - min + 1)) + min
+);
