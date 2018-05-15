@@ -155,6 +155,7 @@ const initialState = {
     images: [],
     pieces: [],
     usedPieces: [],
+    complete: false,
   },
 };
 

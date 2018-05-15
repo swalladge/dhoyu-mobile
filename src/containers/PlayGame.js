@@ -76,6 +76,29 @@ class PlayGame extends Component<Props> {
       </TouchableOpacity>
     ));
 
+    let successOrUsedTiles;
+    if (game.complete) {
+      successOrUsedTiles = (
+        <View style={styles.letterTilesWrapper}>
+          <Text>{game.word}</Text>
+        </View>
+      );
+    } else {
+      successOrUsedTiles = (
+        <View>
+        <View style={styles.letterTilesWrapper}>
+          {usedPieces}
+        </View>
+
+        <View style={styles.letterTilesWrapper}>
+        {pieces}
+        </View>
+        </View>
+      );
+    }
+
+
+
     return (
       <ScrollView>
       <View style={styles.infoPage}>
@@ -87,14 +110,7 @@ class PlayGame extends Component<Props> {
 
         {images}
 
-        <View style={styles.letterTilesWrapper}>
-        {usedPieces}
-        </View>
-
-
-        <View style={styles.letterTilesWrapper}>
-        {pieces}
-        </View>
+        {successOrUsedTiles}
 
       </View>
       </ScrollView>

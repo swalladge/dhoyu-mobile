@@ -213,20 +213,34 @@ export const currentGameReducer = (state: any = {}, action: any) => {
         images: action.payload.images,
         pieces: action.payload.pieces,
         usedPieces: [],
+        complete: false,
       }
     }
 
     case ACTIONS.SPARE_PIECE_PRESSED: {
+      if (state.complete) {
+        return state;
+      }
+
       const pressedPiece = action.payload;
+      const usedPieces = [...state.usedPieces, pressedPiece];
+      const complete = usedPieces.map(piece => piece.text).join('') === state.word;
+
       return {
         ...state,
         pieces: state.pieces.filter(piece => piece.id !== pressedPiece.id),
-        usedPieces: [...state.usedPieces, pressedPiece],
+        usedPieces: usedPieces,
+        complete: complete,
       }
     }
 
     case ACTIONS.USED_PIECE_PRESSED: {
+      if (state.complete) {
+        return state;
+      }
+
       const pressedPiece = action.payload;
+
       return {
         ...state,
         usedPieces: state.usedPieces.filter(piece => piece.id !== pressedPiece.id),

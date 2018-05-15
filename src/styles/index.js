@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
   letterTilesWrapper: {
     flexDirection: 'row',
     alignItems: 'flex-start',
+    height: 60,
   },
   letterTile: {
     backgroundColor: '#e0e0e0',
