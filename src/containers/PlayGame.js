@@ -13,7 +13,7 @@ import {
 import { connect } from 'react-redux';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { retrieveGamesList, playGame, sparePiecePressed } from '../actions';
+import { retrieveGamesList, playGame, sparePiecePressed, usedPiecePressed } from '../actions';
 
 import styles from '../styles';
 
@@ -27,6 +27,7 @@ type Props = {
   pieces: Array<Piece>,
   navigation: any,
   sparePiecePressed: (Piece) => void,
+  usedPiecePressed: (Piece) => void,
 };
 
 
@@ -37,6 +38,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   sparePiecePressed: (piece: Piece) => {
     dispatch(sparePiecePressed(piece));
+  },
+  usedPiecePressed: (piece: Piece) => {
+    dispatch(usedPiecePressed(piece));
   },
 });
 
@@ -57,7 +61,7 @@ class PlayGame extends Component<Props> {
     ));
 
     const usedPieces = game.usedPieces.map(piece => (
-      <TouchableOpacity key={piece.id} onPress={() => {}}>
+      <TouchableOpacity key={piece.id} onPress={() => this.props.usedPiecePressed(piece)}>
         <View elevation={2} style={styles.letterTile} >
           <Text>{piece.text}</Text>
         </View>

@@ -225,6 +225,15 @@ export const currentGameReducer = (state: any = {}, action: any) => {
       }
     }
 
+    case ACTIONS.USED_PIECE_PRESSED: {
+      const pressedPiece = action.payload;
+      return {
+        ...state,
+        usedPieces: state.usedPieces.filter(piece => piece.id !== pressedPiece.id),
+        pieces: [...state.pieces, pressedPiece],
+      }
+    }
+
     default: return state;
   }
 };
