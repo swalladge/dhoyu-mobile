@@ -63,6 +63,9 @@ const styles = StyleSheet.create({
       height: 3,
     },
   },
+  completeWord: {
+    fontSize: 20,
+  },
 });
 
 export default styles;

@@ -248,6 +248,21 @@ export const currentGameReducer = (state: any = {}, action: any) => {
       }
     }
 
+    case ACTIONS.COMPLETE_GAME: {
+      return {
+        ...state,
+        id: 0,
+        author: 'none',
+        public: false,
+        word: 'none',
+        language: 'none',
+        images: [],
+        pieces: [],
+        usedPieces: [],
+        complete: false,
+      }
+    }
+
     default: return state;
   }
 };

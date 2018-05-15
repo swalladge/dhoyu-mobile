@@ -34,6 +34,7 @@ export const ACTIONS = {
   PLAY_GAME_READY: 21,
   SPARE_PIECE_PRESSED: 22,
   USED_PIECE_PRESSED: 23,
+  COMPLETE_GAME: 24,
 };
 
 export function registerUsernameChanged(text: string): any {
@@ -381,4 +382,20 @@ export function usedPiecePressed(piece: any): any {
     payload: piece,
   };
 }
+
+export const completeGame = (id: string) => (dispatch: (any) => void, getState: () => any) => {
+  // launch the action to reset the game screen
+  dispatch({
+    type: ACTIONS.COMPLETE_GAME,
+  });
+
+  // navigate back to list of games
+  NavigationService.navigate('FindGames');
+
+  // log the play
+  API.logPlay(id).then((details) => {
+    console.log(details);
+  });
+  // TODO: possibly a good idea to handle any errors from this axios Promise
+};
 

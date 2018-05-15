@@ -13,7 +13,7 @@ import {
 import { connect } from 'react-redux';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { retrieveGamesList, playGame, sparePiecePressed, usedPiecePressed } from '../actions';
+import { retrieveGamesList, playGame, sparePiecePressed, usedPiecePressed, completeGame } from '../actions';
 
 import styles from '../styles';
 
@@ -28,6 +28,7 @@ type Props = {
   navigation: any,
   sparePiecePressed: (Piece) => void,
   usedPiecePressed: (Piece) => void,
+  completeGame: (string) => void,
 };
 
 
@@ -41,6 +42,9 @@ const mapDispatchToProps = dispatch => ({
   },
   usedPiecePressed: (piece: Piece) => {
     dispatch(usedPiecePressed(piece));
+  },
+  completeGame: (id: string) => {
+    dispatch(completeGame(id));
   },
 });
 
@@ -79,8 +83,15 @@ class PlayGame extends Component<Props> {
     let successOrUsedTiles;
     if (game.complete) {
       successOrUsedTiles = (
+        <View>
         <View style={styles.letterTilesWrapper}>
-          <Text>{game.word}</Text>
+          <Text style={styles.completeWord}>{game.word}</Text>
+        </View>
+
+        <TouchableOpacity onPress={() => this.props.completeGame(game.id)}>
+          <Text>Finish! </Text>
+          <MaterialIcon name="arrow-right-bold" size={40} />
+        </TouchableOpacity>
         </View>
       );
     } else {

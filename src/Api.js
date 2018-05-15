@@ -98,3 +98,16 @@ export const retrieveGame = (id: string) => {
   });
 };
 
+// `id` is a game id
+export const logPlay = (id: string) => {
+  const data = {
+    id: id,
+  };
+
+  return getAxiosAuthedInst().post(
+    '/play',
+    data,
+  ).then(response => response.data).catch((error) => {
+    throw getErrorMsg(error);
+  });
+};
