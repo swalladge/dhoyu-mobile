@@ -212,6 +212,16 @@ export const currentGameReducer = (state: any = {}, action: any) => {
         language: action.payload.language,
         images: action.payload.images,
         pieces: action.payload.pieces,
+        usedPieces: [],
+      }
+    }
+
+    case ACTIONS.SPARE_PIECE_PRESSED: {
+      const pressedPiece = action.payload;
+      return {
+        ...state,
+        pieces: state.pieces.filter(piece => piece.id !== pressedPiece.id),
+        usedPieces: [...state.usedPieces, pressedPiece],
       }
     }
 

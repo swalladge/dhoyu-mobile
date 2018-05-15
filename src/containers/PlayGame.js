@@ -13,7 +13,7 @@ import {
 import { connect } from 'react-redux';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { retrieveGamesList, playGame } from '../actions';
+import { retrieveGamesList, playGame, sparePiecePressed } from '../actions';
 
 import styles from '../styles';
 
@@ -26,15 +26,18 @@ type Props = {
   game: any,
   pieces: Array<Piece>,
   navigation: any,
+  sparePiecePressed: (Piece) => void,
 };
 
 
 const mapStateToProps = state => ({
   game: state.currentGame,
-  pieces: state.currentGame.pieces,
 });
 
 const mapDispatchToProps = dispatch => ({
+  sparePiecePressed: (piece: Piece) => {
+    dispatch(sparePiecePressed(piece));
+  },
 });
 
 
@@ -53,8 +56,16 @@ class PlayGame extends Component<Props> {
       </View>
     ));
 
-    const pieces = this.props.pieces.map(piece => (
+    const usedPieces = game.usedPieces.map(piece => (
       <TouchableOpacity key={piece.id} onPress={() => {}}>
+        <View elevation={2} style={styles.letterTile} >
+          <Text>{piece.text}</Text>
+        </View>
+      </TouchableOpacity>
+    ));
+
+    const pieces = game.pieces.map(piece => (
+      <TouchableOpacity key={piece.id} onPress={() => this.props.sparePiecePressed(piece)}>
         <View elevation={2} style={styles.letterTile} >
           <Text>{piece.text}</Text>
         </View>
@@ -72,7 +83,10 @@ class PlayGame extends Component<Props> {
 
         {images}
 
-        <Text>TODO</Text>
+        <View style={styles.letterTilesWrapper}>
+        {usedPieces}
+        </View>
+
 
         <View style={styles.letterTilesWrapper}>
         {pieces}

@@ -153,6 +153,8 @@ const initialState = {
     word: 'none',
     language: 'none',
     images: [],
+    pieces: [],
+    usedPieces: [],
   },
 };
 

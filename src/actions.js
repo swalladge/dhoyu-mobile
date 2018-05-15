@@ -32,6 +32,7 @@ export const ACTIONS = {
   RETRIEVE_GAME_FAILED: 19,
   RETRIEVE_GAME_LOADING: 20,
   PLAY_GAME_READY: 21,
+  SPARE_PIECE_PRESSED: 22,
 };
 
 export function registerUsernameChanged(text: string): any {
@@ -365,3 +366,11 @@ export const playGame = (id: string) => (dispatch: (any) => void, getState: () =
     });
   });
 };
+
+export function sparePiecePressed(piece: any): any {
+  return {
+    type: ACTIONS.SPARE_PIECE_PRESSED,
+    payload: piece,
+  };
+}
+
