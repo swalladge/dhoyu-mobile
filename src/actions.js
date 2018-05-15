@@ -310,38 +310,6 @@ export const logout = () => (dispatch: (any) => void, getState: () => any) => {
   AsyncStorage.clear();
 };
 
-const splitIntoPieces = (word: string) => {
-  let wordPieces = [];
-  let piece = '';
-
-  let i = 0;
-  while (i < word.length) {
-    if (piece === '' || getRandomInt(0,1) === 1) {
-      piece = piece + word[i];
-      i += 1;
-    } else {
-      wordPieces.push(piece);
-      piece = '';
-    }
-  }
-  if (piece !== '') {
-    wordPieces.push(piece);
-  }
-
-  // TODO: randomize list
-
-  let pieces = [];
-  for (let i = 0, len = wordPieces.length; i < len; i++) {
-    pieces.push({
-      text: wordPieces[i],
-      id: i,
-    });
-  }
-
-  console.log(pieces);
-  return pieces;
-};
-
 export const playGame = (id: string) => (dispatch: (any) => void, getState: () => any) => {
   // const state = getState();
   dispatch({
@@ -351,12 +319,22 @@ export const playGame = (id: string) => (dispatch: (any) => void, getState: () =
   // TODO: consider caching this: build up local data structure and check if key
   // there before network request
   API.retrieveGame(id).then((details) => {
-    console.log(details);
+
+    // api returns an array of strings, but we want an array of objects with IDs
+    let simplePieces = details.pieces;
+    let pieces = [];
+    for (let i = 0, len = simplePieces.length; i < len; i++) {
+      pieces.push({
+        text: simplePieces[i],
+        id: i,
+      });
+    }
+
     dispatch({
       type: ACTIONS.PLAY_GAME_READY,
       payload: {
-        ...details, // a game with data
-        pieces: splitIntoPieces(details.word),
+        ...details,
+        pieces
       },
     });
 
