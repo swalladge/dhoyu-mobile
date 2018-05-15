@@ -101,7 +101,7 @@ export const retrieveGame = (id: string) => {
 // `id` is a game id
 export const logPlay = (id: string) => {
   const data = {
-    id: id,
+    id: id.toString(),
   };
 
   return getAxiosAuthedInst().post(

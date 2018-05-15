@@ -20,7 +20,7 @@ type Props = {
   state: LoadingState,
   refresh: () => void,
   gamesCreated: number,
-  gamesPlayed: number,
+  gamePlays: number,
   isAdmin: string,
   username: string,
   learnerScore: number,
@@ -35,7 +35,7 @@ const mapStateToProps = state => ({
   error: state.profile.error || '',
   username: state.profile.username || '',
   isAdmin: (state.profile.isAdmin || false) ? 'yes' : 'no',
-  gamesPlayed: state.profile.gamesPlayed || 0,
+  gamePlays: state.profile.gamePlays || 0,
   gamesCreated: state.profile.gamesCreated || 0,
   learnerScore: state.profile.learnerScore || 0,
   creatorScore: state.profile.creatorScore || 0,
@@ -93,7 +93,7 @@ class User extends Component<Props> {
             Admin: {this.props.isAdmin}
             </Text>
             <Text>
-            Games played: {this.props.gamesPlayed}
+            Number of plays: {this.props.gamePlays}
             </Text>
             <Text>
             Games created: {this.props.gamesCreated}

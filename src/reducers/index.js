@@ -93,7 +93,7 @@ export const profileReducer = (state: any = {}, action: any) => {
         state: 'ready',
         username: action.payload.username,
         isAdmin: action.payload.is_admin,
-        gamesPlayed: action.payload.games_played,
+        gamePlays: action.payload.n_plays,
         gamesCreated: action.payload.games_created,
         learnerScore: action.payload.learner_score,
         creatorScore: action.payload.creator_score,

@@ -13,7 +13,7 @@ import {
 import { connect } from 'react-redux';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { retrieveGamesList, playGame, sparePiecePressed, usedPiecePressed, completeGame } from '../actions';
+import { retrieveGamesList, playGame, sparePiecePressed, usedPiecePressed, finishGame } from '../actions';
 
 import styles from '../styles';
 
@@ -28,7 +28,7 @@ type Props = {
   navigation: any,
   sparePiecePressed: (Piece) => void,
   usedPiecePressed: (Piece) => void,
-  completeGame: (string) => void,
+  finishGame: (string) => void,
 };
 
 
@@ -43,8 +43,8 @@ const mapDispatchToProps = dispatch => ({
   usedPiecePressed: (piece: Piece) => {
     dispatch(usedPiecePressed(piece));
   },
-  completeGame: (id: string) => {
-    dispatch(completeGame(id));
+  finishGame: (game: any) => {
+    dispatch(finishGame(game));
   },
 });
 
@@ -88,7 +88,7 @@ class PlayGame extends Component<Props> {
           <Text style={styles.completeWord}>{game.word}</Text>
         </View>
 
-        <TouchableOpacity onPress={() => this.props.completeGame(game.id)}>
+        <TouchableOpacity onPress={() => this.props.finishGame(game)}>
           <Text>Finish! </Text>
           <MaterialIcon name="arrow-right-bold" size={40} />
         </TouchableOpacity>
@@ -113,7 +113,7 @@ class PlayGame extends Component<Props> {
     return (
       <ScrollView>
       <View style={styles.infoPage}>
-        <TouchableOpacity onPress={() => this.props.navigation.navigate('FindGames')} >
+        <TouchableOpacity onPress={() => this.props.finishGame(game)} >
           <MaterialIcon name="close-circle-outline" size={40} />
         </TouchableOpacity>
 

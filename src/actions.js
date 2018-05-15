@@ -383,8 +383,8 @@ export function usedPiecePressed(piece: any): any {
   };
 }
 
-export const completeGame = (id: string) => (dispatch: (any) => void, getState: () => any) => {
-  // launch the action to reset the game screen
+export const finishGame = (game: any) => (dispatch: (any) => void, getState: () => any) => {
+  // launch the action to reset the local current game state
   dispatch({
     type: ACTIONS.COMPLETE_GAME,
   });
@@ -392,10 +392,12 @@ export const completeGame = (id: string) => (dispatch: (any) => void, getState: 
   // navigate back to list of games
   NavigationService.navigate('FindGames');
 
-  // log the play
-  API.logPlay(id).then((details) => {
-    console.log(details);
-  });
-  // TODO: possibly a good idea to handle any errors from this axios Promise
+  // only log the play if the game was complete
+  if (game.complete) {
+    // log the play
+    API.logPlay(game.id).then((details) => {
+      console.log(details);
+    });
+    // TODO: possibly a good idea to handle any errors from this axios Promise
+  }
 };
-
