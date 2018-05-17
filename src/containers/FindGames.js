@@ -60,16 +60,17 @@ class FindGames extends Component<Props> {
     const games = this.props.games.map(game => {
       let deleteButton;
       if (game.can_delete) {
-        // TODO: styling
-        deleteButton = (<TouchableOpacity onPress={() => this.props.deleteGame(game.id)}>
-          <MaterialIcon name="close-circle-outline" size={20} />
-        </TouchableOpacity>);
+        deleteButton = (
+          <TouchableOpacity style={styles.gameInListDeleteBtn} onPress={() => this.props.deleteGame(game.id)}>
+            <MaterialIcon name="delete-forever" size={20} />
+          </TouchableOpacity>
+        );
       }
       return (
         <TouchableOpacity key={game.id} onPress={() => this.props.playGame(game.id)}>
           <View elevation={5} style={styles.gameInList}>
-            <Text>{game.word}</Text>
             {deleteButton}
+            <Text>{game.word}</Text>
           </View>
         </TouchableOpacity>
       );

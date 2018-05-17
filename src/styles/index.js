@@ -45,6 +45,9 @@ const styles = StyleSheet.create({
       width: 0,
       height: 3,
     },
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    height: 60,
   },
   letterTilesWrapper: {
     flexDirection: 'row',
@@ -65,6 +68,9 @@ const styles = StyleSheet.create({
   },
   completeWord: {
     fontSize: 20,
+  },
+  gameInListDeleteBtn: {
+    marginRight: 20,
   },
 });
 
