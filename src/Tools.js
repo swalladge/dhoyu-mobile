@@ -9,14 +9,18 @@ export const isValidToken = (token) => {
 
 // get a pretty error message given an axios `error` instance
 export const getErrorMsg: (any) => string = (error) => {
-  console.log(error);
   if (error.response) {
-    return `${error.response.status} | request failed`;
+    // the API should always return a JSON object with a msg key
+    let msg = error.response.data.msg || 'no message';
+    if (error.response.status === 500) {
+      msg = 'internal server error - please report this issue';
+    }
+    return `${error.response.status}: ${msg}`;
   } else if (error.request) {
-    return `No response from server | ${error.request}`;
+    return `No response: ${error.request}`;
   }
   // Something happened in setting up the request that triggered an Error
-  return error.message;
+  return `Client error: ${error.message}`;
 };
 
 /**
