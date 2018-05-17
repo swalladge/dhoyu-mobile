@@ -379,3 +379,13 @@ export const finishGame = (game: any) => (dispatch: (any) => void, getState: () 
     // TODO: possibly a good idea to handle any errors from this axios Promise
   }
 };
+
+export const deleteGame = (id: string) => (dispatch: (any) => void, getState: () => any) => {
+  API.deleteGame(id).then((details) => {
+    dispatch(retrieveGamesList());
+    // TODO: investigate this behaviour - should it reload the games list?
+    // should it locally remove from state to avoid another api call? what if
+    // the game was deleted from a page other than list of games?
+  });
+  // TODO: probably should catch an error here...
+};

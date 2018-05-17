@@ -111,3 +111,10 @@ export const logPlay = (id: string) => {
     throw getErrorMsg(error);
   });
 };
+
+export const deleteGame = (id: string) => {
+  console.log(`deleting game ${id}`);
+  return getAxiosAuthedInst().delete(`/games/${id}`).then(response => response.data).catch((error) => {
+    throw getErrorMsg(error);
+  });
+};
