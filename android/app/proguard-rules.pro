@@ -69,4 +69,4 @@
 -dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
 -dontwarn okio.**
 
--keep class com.dhoyu.BuildConfig { *; }
+-keep class au.id.swalladge.dhoyu.BuildConfig { *; }

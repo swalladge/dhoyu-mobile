@@ -1,4 +1,4 @@
-package com.dhoyu;
+package au.id.swalladge.dhoyu;
 
 import com.facebook.react.ReactActivity;
 

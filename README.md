@@ -61,6 +61,12 @@ The release apk should appear at
 `android/app/build/outputs/apk/app-release.apk`. :tada:
 
 
+## Release new version
+
+- update version in `package.json`
+- increment versionCode and update versionName in `android/app/build.gradle`
+- build a release apk
+
 ## License
 
 
