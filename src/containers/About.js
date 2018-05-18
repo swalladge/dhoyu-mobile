@@ -33,7 +33,6 @@ class About extends Component<Props> {
     drawerIcon: <MaterialIcon name="information-outline" size={20} />,
   });
 
-  // TODO: real github link once hosted
   render() {
     return (
       <View style={styles.infoPage}>
@@ -43,9 +42,9 @@ class About extends Component<Props> {
           thesis on developing mobile games for Aboriginal languages.
         </Text>
         <Text>
-          Source code can be found on
+          Source code can be found at
           {' '}
-          <Text style={styles.textLink} onPress={() => Linking.openURL('https://github.com/')}>GitHub</Text>.
+          <Text style={styles.textLink} onPress={() => Linking.openURL('https://github.com/swalladge/dhoyu-mobile/')}>https://github.com/swalladge/dhoyu-mobile/</Text>.
         </Text>
 
         <Text style={styles.headerText}>Acknowledgements</Text>
