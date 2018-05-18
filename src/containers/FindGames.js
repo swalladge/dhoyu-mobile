@@ -111,10 +111,12 @@ class FindGames extends Component<Props> {
 
           <Text>List of all games available.</Text>
 
+        <View style={styles.verticalPadded}>
           <Button
             title="Refresh"
             onPress={() => this.props.loadGames()}
           />
+        </View>
 
 
           {loadingInfo}

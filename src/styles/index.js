@@ -72,6 +72,10 @@ const styles = StyleSheet.create({
   gameInListDeleteBtn: {
     marginRight: 20,
   },
+  verticalPadded: {
+    marginTop: 10,
+    marginBottom: 10,
+  },
 });
 
 export default styles;

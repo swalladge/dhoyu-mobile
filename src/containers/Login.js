@@ -69,16 +69,20 @@ class Login extends Component<Props> {
           onChangeText={text => this.props.passwordChanged(text)}
         />
 
+        <View style={styles.verticalPadded}>
         <Button
           title="Login!"
           onPress={() => this.props.loginClicked()}
         />
+        </View>
 
+        <View style={styles.verticalPadded}>
         <Button
           title="I do not have an account"
           onPress={() =>
             this.props.navigation.navigate('registerScreen')}
         />
+        </View>
       </View>
     );
   }

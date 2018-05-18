@@ -16,14 +16,16 @@ import { connect } from 'react-redux';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import styles from '../styles';
-import { chooseCreateImage, createWordChanged, createPublicSwitchChanged, uploadGame } from '../actions';
+import { chooseCreateImage, createWordChanged, createPublicSwitchChanged, uploadGame, resetUploadGame } from '../actions';
 
 type Props = {
   chooseImage: () => void,
   images: [any],
+  word: string,
   wordChanged: (string) => void,
   switchChanged: (boolean) => void,
   uploadGame: () => void,
+  reset: () => void,
   isPublic: boolean,
   error: string,
 };
@@ -33,6 +35,7 @@ const mapStateToProps = state => ({
   images: state.create.images || [],
   isPublic: state.create.isPublic || false,
   error: state.create.error || '',
+  word: state.create.word || '',
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -48,6 +51,9 @@ const mapDispatchToProps = dispatch => ({
   uploadGame: () => {
     dispatch(uploadGame());
   },
+  reset: () => {
+    dispatch(resetUploadGame());
+  },
 });
 
 
@@ -58,8 +64,7 @@ class Upload extends Component<Props> {
     drawerIcon: <MaterialIcon name="cloud-upload" size={20} />,
   });
 
-  // TODO: reset state on upload or reset action
-  // also need two way data binding for word text input?
+  // TODO: need two way data binding for word text input?
 
   render() {
     // const windowWidth = Dimensions.get('window').width;
@@ -86,6 +91,7 @@ class Upload extends Component<Props> {
           <TextInput
             style={{ width: '100%' }}
             placeholder="word"
+            value={this.props.word}
             onChangeText={text => this.props.wordChanged(text)}
           />
 
@@ -97,17 +103,30 @@ class Upload extends Component<Props> {
             />
           </View>
 
+          <View style={styles.verticalPadded}>
           <Button
             title="Add image"
             onPress={() => this.props.chooseImage()}
           />
+          </View>
 
           {imageElements}
 
+          <View style={styles.verticalPadded}>
           <Button
             title="Upload!"
             onPress={() => this.props.uploadGame()}
           />
+          </View>
+
+          <View style={styles.verticalPadded}>
+          <Button
+            title="Reset"
+            color="#EE1111"
+            onPress={() => this.props.reset()}
+          />
+          </View>
+
 
 
         </View>

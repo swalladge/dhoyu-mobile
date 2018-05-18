@@ -35,6 +35,7 @@ export const ACTIONS = {
   SPARE_PIECE_PRESSED: 22,
   USED_PIECE_PRESSED: 23,
   COMPLETE_GAME: 24,
+  RESET_CREATE_GAME: 25,
 };
 
 export function registerUsernameChanged(text: string): any {
@@ -240,6 +241,12 @@ export function createWordChanged(text: string): any {
   return {
     type: ACTIONS.CREATE_WORD_CHANGED,
     payload: text,
+  };
+}
+
+export function resetUploadGame(): any {
+  return {
+    type: ACTIONS.RESET_CREATE_GAME,
   };
 }
 

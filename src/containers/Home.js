@@ -37,10 +37,12 @@ class Home extends Component<Props> {
           Play!
         </Text>
 
+        <View style={styles.verticalPadded}>
         <Button
           title="Find games"
           onPress={() => this.props.navigation.navigate('FindGames')}
         />
+        </View>
 
       </View>
     );

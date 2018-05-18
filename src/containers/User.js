@@ -129,10 +129,12 @@ class User extends Component<Props> {
 
         {this.getUserJSX()}
 
+        <View style={styles.verticalPadded}>
         <Button
           title="Logout"
           onPress={() => this.props.logout()}
         />
+        </View>
 
       </View>
     );

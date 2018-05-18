@@ -139,6 +139,20 @@ export const uploadReducer = (state: any = {}, action: any) => {
     case ACTIONS.CREATE_UPLOAD_COMPLETE: {
       return {
         ...state,
+        // reset the state because it was successful - no need to keep locally
+        images: [],
+        word: '',
+        isPublic: false,
+      };
+    }
+
+    case ACTIONS.RESET_CREATE_GAME: {
+      return {
+        ...state,
+        // reset the state
+        images: [],
+        word: '',
+        isPublic: false,
       };
     }
 

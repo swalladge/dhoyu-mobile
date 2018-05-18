@@ -68,16 +68,20 @@ class Register extends Component<Props> {
           onChangeText={text => this.props.passwordChanged(text)}
         />
 
+        <View style={styles.verticalPadded}>
         <Button
           title="Register!"
           onPress={() => this.props.registerClicked()}
         />
+        </View>
 
+        <View style={styles.verticalPadded}>
         <Button
           title="I already have an account"
           onPress={() =>
             this.props.navigation.navigate('loginScreen')}
         />
+        </View>
       </View>
     );
   }
