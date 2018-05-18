@@ -140,6 +140,7 @@ const initialState = {
     images: [],
     word: '',
     isPublic: false,
+    uploadInProgress: false,
   },
   gamesList: {
     games: [],

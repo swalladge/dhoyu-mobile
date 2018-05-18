@@ -28,6 +28,7 @@ type Props = {
   reset: () => void,
   isPublic: boolean,
   error: string,
+  uploadDisabled: boolean,
 };
 
 
@@ -36,6 +37,7 @@ const mapStateToProps = state => ({
   isPublic: state.create.isPublic || false,
   error: state.create.error || '',
   word: state.create.word || '',
+  uploadInProgress: state.create.uploadInProgress,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -80,7 +82,18 @@ class Upload extends Component<Props> {
       error = <Text>{this.props.error}</Text>;
     }
 
-    // TODO: disable upload button after upload action send to avoid bounce
+    let uploadBtn;
+    if (this.props.uploadInProgress) {
+      uploadBtn = <Text>Uploading...</Text>;
+    } else {
+      uploadBtn = (
+          <Button
+            title="Upload!"
+            onPress={() => this.props.uploadGame()}
+          />
+      );
+    }
+
     return (
       <ScrollView>
         <View style={styles.infoPage}>
@@ -113,10 +126,7 @@ class Upload extends Component<Props> {
           {imageElements}
 
           <View style={styles.verticalPadded}>
-          <Button
-            title="Upload!"
-            onPress={() => this.props.uploadGame()}
-          />
+            {uploadBtn}
           </View>
 
           <View style={styles.verticalPadded}>

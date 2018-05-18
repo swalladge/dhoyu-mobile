@@ -36,6 +36,7 @@ export const ACTIONS = {
   USED_PIECE_PRESSED: 23,
   COMPLETE_GAME: 24,
   RESET_CREATE_GAME: 25,
+  CREATE_UPLOAD_PROGRESS: 26,
 };
 
 export function registerUsernameChanged(text: string): any {
@@ -258,11 +259,16 @@ export function createPublicSwitchChanged(value: boolean): any {
 }
 
 export const uploadGame = () => (dispatch: (any) => void, getState: () => any) => {
+  // to display loading icon, etc.
+  // anything done by this should be reverted in CREATE_UPLOAD_COMPLETE and CREATE_UPLOAD_FAILED
+  dispatch({
+    type: ACTIONS.CREATE_UPLOAD_PROGRESS,
+  });
+
   const state = getState();
 
   // TODO: check for blank/invalid data
 
-  // TODO: reset local state once successfully uploaded
   API.uploadGame({
     images: state.create.images || [],
     word: state.create.word || '',

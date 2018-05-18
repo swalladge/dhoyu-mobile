@@ -143,6 +143,7 @@ export const uploadReducer = (state: any = {}, action: any) => {
         images: [],
         word: '',
         isPublic: false,
+        uploadInProgress: false,
       };
     }
 
@@ -160,6 +161,14 @@ export const uploadReducer = (state: any = {}, action: any) => {
       return {
         ...state,
         error: action.payload,
+        uploadInProgress: false,
+      };
+    }
+
+    case ACTIONS.CREATE_UPLOAD_PROGRESS: {
+      return {
+        ...state,
+        uploadInProgress: true,
       };
     }
 
