@@ -7,6 +7,7 @@ import {
   Button,
   ScrollView,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 
 import { connect } from 'react-redux';
@@ -56,12 +57,24 @@ class FindGames extends Component<Props> {
     this.props.loadGames();
   }
 
+  confirmDelete(id: string) {
+    Alert.alert(
+      'Confirm Delete',
+      'Permanently delete this game?',
+      [
+        {text: 'Cancel', style: 'cancel'},
+        {text: 'OK', onPress: () => this.props.deleteGame(id)},
+      ],
+      { cancelable: true }
+    )
+  }
+
   render() {
     const games = this.props.games.map(game => {
       let deleteButton;
       if (game.can_delete) {
         deleteButton = (
-          <TouchableOpacity style={styles.gameInListDeleteBtn} onPress={() => this.props.deleteGame(game.id)}>
+          <TouchableOpacity style={styles.gameInListDeleteBtn} onPress={() => this.confirmDelete(game.id)}>
             <MaterialIcon name="delete-forever" size={20} />
           </TouchableOpacity>
         );
