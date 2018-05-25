@@ -47,6 +47,12 @@ class About extends Component<Props> {
           <Text style={styles.textLink} onPress={() => Linking.openURL('https://github.com/swalladge/dhoyu-mobile/')}>https://github.com/swalladge/dhoyu-mobile/</Text>.
         </Text>
 
+        <Text>
+          Please note only Kriol is currently supported for the games. Future
+          work may expand this to support other languages and switching between
+          them in the application.
+        </Text>
+
         <Text style={styles.headerText}>Acknowledgements</Text>
         <Text>
           This application is inspired by work and designs by Thompson et al.

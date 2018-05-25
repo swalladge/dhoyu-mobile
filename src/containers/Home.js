@@ -34,7 +34,7 @@ class Home extends Component<Props> {
     return (
       <View style={styles.container}>
         <Text style={styles.headerText}>
-          Play!
+          Play Kriol word games!
         </Text>
 
         <View style={styles.verticalPadded}>

@@ -97,7 +97,7 @@ class Upload extends Component<Props> {
     return (
       <ScrollView>
         <View style={styles.infoPage}>
-          <Text style={styles.headerText}>Create Game</Text>
+          <Text style={styles.headerText}>Create Kriol word game</Text>
 
           {error}
 
