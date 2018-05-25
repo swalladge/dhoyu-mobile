@@ -31,6 +31,8 @@ const getAxiosAuthedInst = () => axios.create({
   headers: {
     Authorization: `Bearer ${token}`,
   },
+  // large timeout (1 minute) as a temporary attempt to make loading games work on slow connections
+  timeout: 60000,
 });
 
 const getAxiosInst = () => axios.create({

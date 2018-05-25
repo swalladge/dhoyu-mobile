@@ -83,7 +83,7 @@ class FindGames extends Component<Props> {
         <TouchableOpacity key={game.id} onPress={() => this.props.playGame(game.id)}>
           <View elevation={5} style={styles.gameInList}>
             {deleteButton}
-            <Text>{game.word}</Text>
+            <Text>game #{game.id} by {game.author}</Text>
           </View>
         </TouchableOpacity>
       );
